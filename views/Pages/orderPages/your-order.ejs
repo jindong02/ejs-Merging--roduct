@@ -1,0 +1,280 @@
+<%- include('../../Partials/Statics/Head', {page: query.clientsOrders ? '- Clients Orders' : '- Your Orders' }) %>
+
+  <!-- Body -->
+
+  <body>
+
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+
+      <%- include('../../Partials/Statics/Navbar') %>
+
+        <section class="container your-order-container mt-3 mb-2 mb-md-4 mb-lg-5 pt-lg-2 pb-5">
+
+          <!-- BreadCrumb -->
+          <nav class="py-4 mb-3" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Your Order(s)</li>
+            </ol>
+          </nav>
+
+          <div class="d-lg-flex align-items-center justify-content-between pt-3 mt-lg-2">
+            <h1 class="me-3"></h1>
+            <form action="/filter-orders" method="POST">
+              <div class="d-md-flex mb-3 filter-wrap">
+                <select class="form-select me-4 mb-2 mb-md-0" name="status" id="status" style="min-width: 240px;"
+                  required>
+                  <option value="all" <% if (!query.status) { %> selected <% } %>>All status</option>
+                  <option value="AWAITING_INFORMATION" <% if (query.status==='AWAITING_INFORMATION' ) { %> selected <% }
+                      %>>Awaiting
+                      Information</option>
+                  <option value="AWAITING_PAYMENT" <% if (query.status==='AWAITING_PAYMENT' ) { %> selected <% } %>>
+                      Awaiting Payment</option>
+                  <option value="AWAITING_SHIPMENT" <% if (query.status==='AWAITING_SHIPMENT' ) { %> selected <% } %>>
+                      Awaiting Shipment</option>
+                  <option value="SHIPPED" <% if (query.status==='SHIPPED' ) { %> selected <% } %>>Shipped</option>
+                  <option value="RECEIVED" <% if (query.status==='RECEIVED' ) { %> selected <% } %>>Recieved</option>
+                  <option value="FINALIZED" <% if (query.status==='FINALIZED' ) { %> selected <% } %>>Finalized</option>
+                  <option value="REJECTED" <% if (query.status==='REJECTED' ) { %> selected <% } %>>Rejected</option>
+                  <option value="EXPIRED" <% if (query.status==='EXPIRED' ) { %> selected <% } %>>Expired</option>
+                  <option value="DISPUTE_IN_PROGRESS" <% if (query.status==='DISPUTE_IN_PROGRESS' ) { %> selected <% }
+                      %>>Dispute
+                      in Progress</option>
+                  <option value="DISPUTED" <% if (query.status==='DISPUTED' ) { %> selected <% } %>>Disputed</option>
+                </select>
+
+                <% if (authuser.authorization==='vendor' ) { %>
+                  <select class="form-select me-4 mb-2 mb-md-0" name="clientsOrders" style="min-width: 240px;" required>
+                    <option value="true" <% if (query.clientsOrders) { %> selected <% } %>>Clients Orders</option>
+                    <option value="false" <% if (!query.clientsOrders) { %> selected <% } %>>Your Orders</option>
+                  </select>
+                  <% } %>
+
+                    <button type="submit" class="btn btn-primary">Filter</button>
+              </div>
+            </form>
+          </div>
+
+          <% if (!orders.results.length) { %>
+            <div>
+              <h6 class="mt-5" style="text-align: center">
+                <% if (query.clientsOrders) { %>
+                  <% if (query.status) { %>
+                    You dont have any Clients Order of this type
+                    <% } else { %>
+                      You dont have any Clients Order
+                      <% } %>
+                        <% } else if (query.status) { %>
+                          You dont have any Order of this type
+                          <% } else { %>
+                            You dont have any Order
+                            <% } %>
+              </h6>
+            </div>
+            <% } else { %>
+              <% for(let i=orders.results.length - 1; i> -1; i--) { %>
+
+                <% if (orders.results[i].canDelete){ %>
+                  <input id="delete-order-<%=i%>" type="checkbox" hidden></input>
+                  <!-- when checked css shows next element -->
+                  <%- include('../../Partials/Popup/Delete-popup', {CHECKBOX_ID:"delete-order-"+ i, ACTION : "/update-order/"
+                    + orders.results[i].id, TYPE: 'Order' }) %>
+                    <% } %>
+
+                      <article class="card card-hover border-0 card-deep-shadow overflow-hidden mt-4 
+      <% if (!query.clientsOrders) { %>
+        p-3
+      <% } %> 
+      ">
+                        <div class="row g-0">
+                          <% if(!query.clientsOrders) { %>
+                            <div class="col-sm-4 position-relative bg-position-center bg-repeat-0 bg-size-cover ps-2">
+                              <a href="<%=orders.results[i].redirectLink%>"
+                                class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more">
+
+                                <img src="<%=orders.results[i].product.img_path[0]%>" class="card-img-top"
+                                  style="height: 100%; object-fit: cover;" alt="Image">
+                              </a>
+                            </div>
+                            <div class="col-sm-8">
+                              <% } else { %>
+                                <div>
+                                  <% } %>
+
+                                    <div class="card-body">
+                                      <div class="d-flex align-items-center mb-3">
+                                        <p class="mb-1">Status:
+                                          <span>
+                                            <%- include('../../Partials/components/orderStatus', {STATUS :
+                                              orders.results[i].orderStatus}) %>
+                                          </span>
+                                        </p>
+                                      </div>
+                                      <h3 class="h4">
+                                        <a href="<%=orders.results[i].redirectLink%>">
+                                          <%=orders.results[i].product.title.slice(0, 50)%>
+                                            <% if (orders.results[i].product.title.length> 50) { %>
+                                              ...
+                                              <% } %>
+                                        </a>
+                                      </h3>
+
+                                      <span>
+                                        <p class="mb-0">Total Price:</p>
+                                        <p class="d-flex align-items-center fw-bold text-decoration-none me-3">
+                                          <%= orders.results[i].orderDetails.totalPrice %> $
+                                        </p>
+                                      </span>
+
+                                      <hr class="my-4">
+
+                                      <div class="d-flex align-items-center flex-wrap order-card-btn-wrap">
+                                        <span class="me-5 mb-2">
+                                          <p class="mb-0">Vendor:</p>
+                                          <a href="/user/profile/<%=orders.results[i].vendor%>?productPage=1&reviewPage=1"
+                                            class="d-flex align-items-center fw-bold text-decoration-none me-3">
+                                            <%= orders.results[i].vendor%>
+                                          </a>
+                                        </span>
+
+                                        <span class="me-5 mb-2">
+                                          <p class="mb-0">Buyer:</p>
+                                          <a class="d-flex align-items-center fw-bold text-decoration-none me-3" href="
+                    <% if (orders.results[i].settings.privacyType === 'DEFAULT') { %>
+                      /profile/<%=orders.results[i].buyer%>?productPage=1&reviewPage=1
+                    <% } %>">
+                                            <%= orders.results[i].buyer%>
+                                          </a>
+                                        </span>
+
+                                        <% if (orders.results[i].orderStatus==='DISPUTE_IN_PROGRESS' ) { %>
+                                          <span class="me-5 mb-2">
+                                            <p class="mb-0">Admin:</p>
+                                            <p class="mb-0">
+                                              <%= orders.results[i].disputesSettings?.disputeAdmin ?
+                                                orders.results[i].disputesSettings.disputeAdmin : 'Awaiting Admin...' %>
+                                            </p>
+                                          </span>
+
+                                          <span class="me-5 mb-2">
+                                            <p class="mb-0">Reason of Dispute:</p>
+                                            <p class="mb-0 fw-bold">
+                                              <%= orders.results[i].disputesSettings?.disputeReason%>
+                                            </p>
+                                          </span>
+                                          <% } %>
+
+                                            <% if (orders.results[i].orderStatus==='disputed' ) { %>
+                                              <span class="me-5 mb-2">
+                                                <p class="mb-0">Winner:</p>
+                                                <% if
+                                                  (orders.results[i].disputesSettings.disputeWinner===orders.results[i].vendor
+                                                  || orders.results[i].disputesSettings.disputeWinner==='Both' ) { %>
+                                                  <p class="mb-0"><b>
+                                                      <%=orders.results[i].disputesSettings.disputeWinner%>
+                                                    </b></p>
+                                                  <% } else { %>
+                                                    <p class="mb-0"><b>
+                                                        <%=orders.results[i].buyer%>
+                                                      </b></p>
+                                                    <% }%>
+
+                                              </span>
+                                              <% } %>
+
+
+                                                <% if (orders.results[i].formatedTimer) { %>
+                                                  <span class="me-5 mb-2">
+                                                    <p class="mb-0">Time Left:</p>
+                                                    <p
+                                                      class="mb-0 d-flex align-items-center fw-bold text-decoration-none me-3">
+                                                      <%= orders.results[i].formatedTimer%>
+                                                    </p>
+                                                  </span>
+                                                  <% } %>
+
+                                                    <% if (orders.results[i].canDelete) { %>
+
+                                                      <span class="position-absolute top-0 zindex-2 me-3 mt-3"
+                                                        style="right: 10px;">
+                                                        <label for="delete-order-<%=i%>" class="btn btn-primary p-2">
+                                                          <i class="bx bx-trash"></i>
+                                                        </label>
+                                                      </span>
+
+                                                      <% } %>
+
+
+                                      </div>
+
+                                      <% if(query.clientsOrders==='true' && orders.results[i].buyerInformation) { %>
+                                        <input id="buyer-detail-checkbox-<%=i%>" type="checkbox" hidden />
+                                        <label
+                                          class="w-100 d-flex align-items-center justify-content-between fs-lg fw-bold mt-3 px-2 py-1"
+                                          style="cursor: pointer; border-radius: 4px;"
+                                          for="buyer-detail-checkbox-<%=i%>">
+                                          <span>
+                                            See Buyer Details:
+                                          </span>
+                                          <%- include ("../public/assets/img/icons/caret-down.svg") %>
+                                        </label>
+                                        <div
+                                          class="buyer-detail-wrap d-flex align-items-center mt-3 justify-content-between flex-wrap px-2">
+                                          <span class="mt-2">
+                                            <p class="mb-0">Buyer Info:</p>
+                                            <p class="fs-sm mb-0">
+                                              <%-orders.results[i].buyerInformation%>
+                                            </p>
+                                          </span>
+
+                                          <% if (orders.results[i].orderStatus==='AWAITING_SHIPMENT' ) { %>
+
+                                            <div class="d-flex align-items-center button-group ms-auto mt-3">
+
+                                              <a href="/order-resume/<%=orders.results[i].id%>" class="fs-sm me-3">I
+                                                want to cancel this Order</a>
+
+                                              <div class="my-2 me-2">
+                                                <form
+                                                  action="/update-order/<%=orders.results[i].id%>?<%=url[1]%>&fromOrders=true"
+                                                  method="POST">
+                                                  <button class="btn btn-warning me-3" type="submit" name="status"
+                                                    value="next">I have shipped
+                                                    the Product</button>
+                                                </form>
+                                              </div>
+
+                                              </form>
+
+                                            </div>
+                                            <% } %>
+
+                                        </div>
+                                        <% } %>
+
+                                    </div>
+                                </div>
+                            </div>
+                      </article>
+                      <% } %>
+                        <div class="mt-5">
+                          <%- include('../../Partials/components/pagination', {nextPage: orders.nextPage, currentPage:
+                            parseInt(query.ordersPage), queryName: 'ordersPage' }) %>
+                        </div>
+                        <% } %>
+
+        </section>
+
+        <!-- Footer -->
+        <%- include('../../Partials/Statics/Footer') %>
+    </main>
+
+
+  </body>
+
+  </html>

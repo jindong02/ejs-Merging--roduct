@@ -1,0 +1,196 @@
+<p class="m-0 mt-1">Status: <span><%- include('components/orderStatus', {STATUS : ORDER.orderStatus}) %></span></p>
+
+
+<% if (ORDER.formatedTimer) { %>
+    <p class="m-0 mt-2">Time Left: <b><%=ORDER.formatedTimer%></b></p>
+<% } %>
+<%  if (ORDER.status === 'DISPUTE_IN_PROGRESS') { %>
+    <% if (!ORDER.disputesSettings.disputeAdmin) { %>
+        <p class="m-0"><b>Waiting for an Admin</b></p>
+    <% } else { %>
+        <p class="m-0">Admin: <b><%=ORDER.disputesSettings.disputeAdmin%></b></p>
+    <% } %>
+<% } %>
+
+<hr class="mt-3 mb-4">
+
+<%if (ORDER.status === 'FINALIZED') {%>
+    <p class="mb-0">This Order has been Finalized</p>
+<%}%>
+
+
+<%if (authuser.username === order.vendor) {%>
+    <%if (ORDER.orderStatus === 'AWAITING_INFORMATION') {%>
+        <p class="mt-4">Awaiting Buyer Informations</p>
+    <%}%>
+    <%if (ORDER.orderStatus === 'AWAITING_PAYMENT') {%>
+        <p class="mt-4">Awaiting Buyer Payment</p>
+    <%}%>
+    <%if (ORDER.orderStatus === 'AWAITING_SHIPMENT') {%>
+        <form action="/update-order/<%=order.id%>" method="POST">
+            <button class="btn btn-warning" type="submit" name="status" value="next" style="width: 80%;">I have shipped the Product</button>
+        </form>
+
+
+        <input id="reject-order" type="checkbox" hidden></input>
+        <%- include('./Popup/Reject-popup', {checkboxInputId: 'reject-order', action: '/update-order/' + ORDER.id}) %>
+
+        <div class="mt-3">
+            <label for="reject-order" class="btn btn-danger" style="width: 80%;">
+                <span class="d-none d-xl-inline">Reject this Order</span>
+            </label>
+        </div>
+        
+    <%}%>
+    <%if (ORDER.orderStatus === 'SHIPPED') {%>
+        <p class="mt-4">Awaiting for the Buyer to Recieve the Product</p>
+    <%}%>
+    <%if (ORDER.orderStatus === 'REJECTED') {%>
+        <p class="mt-4">You have rejected this Order</p>
+    <%}%>
+    <%if (ORDER.orderStatus === 'RECEIVED') {%>
+        <p class="mt-4">Awaiting for the Buyer to Finalize the Order</p>
+    <%}%>
+    <%if (ORDER.orderStatus === 'FINALIZED') {%>
+        <p class="mt-4">We have sent you your Money</p>
+    <%}%>
+<%}%>
+
+
+<%if (authuser.username !== order.vendor) {%>
+    <%if (ORDER.orderStatus === 'AWAITING_INFORMATION') {%>
+        <p class="mb-0">We are Waiting for your Information</p>
+        <a class="mt-1 mb-4 mb-0" href="/submit-info/<%=ORDER.id%>">Click Here</a>
+    <%}%>
+    <%if (ORDER.orderStatus === 'AWAITING_PAYMENT') {%>
+        <p class="mb-0">Waiting for your Payment...</p>
+    <%}%>
+    <%if (ORDER.orderStatus === 'AWAITING_SHIPMENT') {%>
+        <p class="mt-4">Waiting for the Vendor to ship the Product</p>
+    <%}%>
+    <%if (ORDER.orderStatus === 'SHIPPED') {%>
+        <form action="/update-order/<%=ORDER.id%>" method="POST">
+            <button class="btn btn-success" type="submit" name="status" value="next" style="width: 80%;">I have recieved the Product</button>
+        </form>
+
+        <% if (ORDER.settings.timerResetLeft) { %>
+        <form action="/update-order/<%=ORDER.id%>" method="POST">
+            <button class="btn btn-primary mt-3" type="submit" name="status" value="resetTimer" style="width: 80%;">I didnt recieve the product yet (<%=ORDER.settings.timerResetLeft%>)</button>
+        </form>
+        <% } %>
+
+        <input id="dispute-order" type="checkbox" hidden></input>
+        <%- include('./Popup/Dispute-popup', {checkboxInputId: 'dispute-order', action: '/update-order/' + ORDER.id}) %>
+
+        <div class="mt-3">
+            <label for="dispute-order" class="btn btn-danger" style="width: 80%;">
+                <span class="d-none d-xl-inline">Disupte this Order</span>
+            </label>
+        </div>
+            
+    <%}%>
+    <%if (ORDER.orderStatus === 'RECEIVED') {%>
+        <form action="/update-order/<%=order.id%>?" method="POST">
+            <button class="btn btn-success" type="submit" name="status" value="next" style="width: 80%;">Everything is good, finalize this order</button>
+        </form>
+
+        <input id="dispute-order" type="checkbox" hidden></input>
+        <%- include('./Popup/Dispute-popup', {checkboxInputId: 'dispute-order', action: '/update-order/' + ORDER.id}) %>
+
+        <div class="mt-3">
+            <label for="dispute-order" class="btn btn-danger" style="width: 80%;">
+                <span class="d-none d-xl-inline">Disupte this Order</span>
+            </label>
+        </div>
+
+    <%}%>
+    <%if (ORDER.orderStatus === 'REJECTED') {%>
+        <p class="mb-2">This Order as been Cancelled by the Vendor</p>
+        <p class="mb-0 fw-bold">Reason of Cancellation:</p>
+        <p class="mb-3 fs-sm"><%=ORDER.cancellationReason%></p>
+    <%}%>
+<%}%>
+
+
+<%if (ORDER.orderStatus === 'DISPUTE_IN_PROGRESS') {%>
+    <% if (authuser.username === order.disputesSettings?.disputeAdmin) { %>
+        <p>Decide who is right or wrong here</p>
+        <p><b>Chat with the vendor and username using the Order chat</b></p>
+
+        <span>
+
+        <input type="checkbox" name="settling-dispute" id="settling-disputes" class="form-check-input me-1">
+        <label for="settling-disputes" class="form-check-label">I have made my decision</label>
+
+        <div class="dispute-settling-container">
+            <div class="my-3">
+
+            <form action="/settle-dispute/<%=ORDER.id%>" method="POST">
+                <div>
+                <input type="radio" id="buyer-radio" name="winner" value="<%=ORDER.buyer%>" class="form-check-input me-1" required>
+                <label class="form-check-label" for="buyer-radio">Buyer Win (<%=ORDER.buyer%>)</label>
+            </div>
+            <div>
+                <input type="radio" id="vendor-radio" name="winner" value="<%=ORDER.vendor%>" class="form-check-input me-1" required>
+                <label class="form-check-label" for="vendor-radio">Vendor Win (<%=ORDER.vendor%>)</label>
+            </div>
+            <div>
+                <input type="radio" id="both-radio" name="winner" value="Both" class="form-check-input me-1" required>
+                <label class="form-check-label" for="both-radio">Both Win</label>
+            </div>
+                <button class="btn btn-primary mt-3" type="submit" name="status" value="dispute" style="width: 80%;">Settle Dispute</button>
+            </form>
+        </div>
+        </div>
+    </span>
+    <% } else { %> 
+        <p class="mb-0">This Order is currently Disputed</p>
+        <p class="mt-2 mb-0"><b>Defend your case in the order chat</b></p>
+
+        <div class="d-flex justify-content-between px-2 product-description-content mt-4">
+            <p class="m-0" ><b>Reason of Dispute:</b></p>
+            <p class="m-0"><%= ORDER.disputesSettings.disputeReason%></p>
+          </div>
+    <% } %>
+<%}%>
+
+
+<%if (ORDER.orderStatus === 'DISPUTED') {%>
+    <p class="mb-2">This Dipsute has been settle</p>
+
+    <p class="mb-0">The Winner of this Dispute is : 
+        <b>
+            <% if (ORDER.disputesSettings.disputeWinner === 'Both') { %>
+                Draw, you both win
+            <%} else if (ORDER.disputesSettings.disputeWinner === ORDER.vendor) { %>
+                <%=ORDER.vendor%> 
+                <% if (authuser.username === ORDER.vendor) { %>
+                    (You)
+                <% } else { %>
+                    (Vendor) 
+                <% } %>
+                <% } else { %> 
+                    <%=ORDER.buyer%> 
+                    <% if (authuser.username !== ORDER.vendor) { %>
+                        (You)
+                    <% } else { %>
+                        (Buyer)
+                    <%}%>
+                <% } %>
+    </b>
+   </p>
+
+<%}%>
+
+
+
+
+<% if (ORDER.canDelete) { %>
+    <input id="delete-order-1" type="checkbox" hidden></input>
+    <%- include('./Popup/Delete-popup', {CHECKBOX_ID:"delete-order-1", ACTION : "/update-order/" + ORDER.id, TYPE: 'Order'}) %>  
+       <label for="delete-order-1" class="btn btn-primary p-2 mx-auto" style="width: 80%;">
+            Delete Order
+        </label>
+<% } %>
+
+<hr class="mt-4 mb-3">

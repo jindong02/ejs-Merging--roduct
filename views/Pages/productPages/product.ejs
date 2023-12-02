@@ -1,0 +1,310 @@
+<%- include('../../Partials/Statics/Head', {page: "- " + product.title}) %>
+
+
+<!-- Body -->
+
+<body>
+
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <main class="page-wrapper">
+
+    <%- include('../../Partials/Statics/Navbar') %>
+
+    <!-- Hero -->
+    <section class="pt-2 mb-4">
+      <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav class="py-4" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/products?productPage=1">Product</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              <%=product.title.slice(0, 50)%>
+              <% if (product.title.length > 50) { %>
+              ...
+              <% } %>
+            </li>
+          </ol>
+        </nav>
+
+
+        <!-- Badges -->
+        <div class="d-flex py-sm-2 pt-lg-4">
+          <span class="badge bg-success fs-sm me-2">Best Seller</span>
+          <% if (product.default_price) { %>
+          <span class="badge bg-success fs-sm me-2">Sales!</span>
+          <% } %>
+          <a href="#" class="badge bg-white text-dark fs-sm text-decoration-none">Web Development</a>
+        </div>
+
+        <!-- Title -->
+        <h1 class="h3 mt-3"><%=product.title%></h1>
+
+        <!-- Stats -->
+        <div class="d-sm-flex ">
+          <div class="d-flex border-sm-end pe-sm-3 me-sm-3 mb-2 mb-sm-0">
+            <div class="text-nowrap me-1">
+              <%- include('../../Partials/components/rating', {rating: product.review.average_note}) %>
+            </div>
+            <span class="opacity-70">
+              <%- include('../../Partials/components/numberReview', {NUMBER_OF_REVIEWS: product.review.number_review}) %>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="container product-single-container">
+      <div class="row">
+
+        <aside class="col-lg-4 col-md-5 offset-xl-1 order-md-2 mb-4">
+          <div style="margin-top: -96px;"></div>
+          <div class="position-sticky top-0 pt-5">
+            <div class="pt-5">
+              <div class="card card-deep-shadow p-3">
+                <div class="card-body">
+                  <% if (product.aboutProduct.length) { %>
+                  <h5 class="mb-4">About this Product:</h5>
+                  <div class="list-unstyled">
+                    <!-- Allow User to Choose SVG -->
+                    <% for(let i = 0; i < product.aboutProduct.length; i++) { %>
+                    <li class="d-flex mb-2">
+                      <i class='bx bx-list-check text-primary fs-xl mt-1'></i>
+                      <p class="fs-sm ms-2 my-0"><%=product.aboutProduct[i]%></p>
+                    </li>
+                    <% } %>
+                  </div>
+                  <% } %>
+
+                  <% if (product.timerEndSales) { %>
+                    <div class="d-flex align-items-end mb-0">
+                      <p class="text-danger opacity-90 fs-sm mb-0 mt-2 ">Sales end in: <span class="ms-1"><%=product.timerEndSales%></span></p>
+                    </div>
+                  <% } %>
+
+                  
+                  <div class="d-flex align-items-end mb-0">
+                    <p class="h5 mb-0">Price:</p>
+                    <% if (product.salesPrice) { %>
+                    <p class="h4 text-primary mb-0 mt-2 ms-3"><%=product.salesPrice%>$</p>
+                    <del class="h5 text-muted mb-0 mt-2 ms-3 opacity-70"><%=product.price%>$</del>
+                    <% } else { %>
+                    <p class="h4 text-primary mb-0 mt-2 ms-3"><%=product.price%>$</p>
+                    <% } %>
+                  </div>
+
+                  <div class="d-sm-flex mt-1">
+                    <p class="fs-sm mb-0"><span class="opacity-70"> Ship From : </span><span
+                        class="ms-1"><b><%=product.ship_from%></b></span></p>
+                  </div>
+
+                  <div class="d-sm-flex justify-content-between mt-2">
+                    <% if (product.qty_settings?.available_qty) { %>
+                    <p class="fs-xs opacity-70 mb-0">Available Quantity : <%=product.qty_settings.available_qty%></p>
+                    <% } %>
+                    <% if (product.qty_settings?.max_order) { %>
+                    <p class="fs-xs opacity-70 mb-0">Maximun per Order : <%=product.qty_settings.max_order%></p>
+                    <% } %>
+                  </div>
+
+                </div>
+                <a href="/order/<%=product.slug%>" class="btn btn-primary rounded-pill shadow-primary mt-0">Buy This
+                  Product</a>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="col-xl-7 col-lg-8 col-md-7 order-md-1 mb-5">
+
+          <div class="product-image-wrap">
+            <input id="product-radio-0" name="product-image" type="radio" checked hidden />
+            <% for(let i = 1; i < product.img_path.length; i++) { %>
+            <input id="product-radio-<%=i%>" name="product-image" type="radio" hidden />
+            <% } %>
+
+            <div class="product-show-image-wrap card-deep-shadow">
+              <img src="<%=product.img_path[0]%>" class="card-img-top product-image-0" alt="Product Image" />
+              
+              <% for(let i = 1; i < product.img_path.length; i++) { %>
+                <img src="<%=product.img_path[i]%>" class="card-img-top product-image-<%=i%>" alt="Product Image" />
+              <% } %>
+            </div>
+
+            <% if (product.img_path.length > 1) { %>
+              <div class="image-list d-flex">
+                <label for="product-radio-0">
+                  <img src="<%=product.img_path[0]%>" class="card-img-top mt-3" alt="Product Image">
+                </label>
+                <% for(let i = 1; i < product.img_path.length; i++) { %>
+                <label for="product-radio-<%=i%>">
+                  <img src="<%=product.img_path[i]%>" class="card-img-top mt-3" alt="Product Image">
+                </label>
+                <% } %>
+              </div>
+            <% } %>
+
+
+          </div>
+
+          <!-- Vendor -->
+          <div class="card card-deep-shadow py-3 px-3 px-md-4 mt-3">
+            <div class="d-flex align-items-center flex-wrap">
+
+              <a href="/user/profile/<%=product.vendor%>?productPage=1&reviewPage=1">
+                <img src="<%=vendor.img_path%>" class="medium-rc rounded-circle" width="60" style="min-width: 60px"
+                  alt="<%=vendor.username%>">
+              </a>
+              <div class="px-2 px-sm-3 me-md-3">
+                <div class="opacity-80 mb-1">Vendor:</div>
+                <a href="/user/profile/<%=vendor.username%>?productPage=1&reviewPage=1"><%=vendor.username%></a>
+              </div>
+              <div class="px-2 px-sm-3 py-3">
+                <div class="opacity-80 mb-1">Vendor Rating :</div>
+                <div class="d-flex flex-row border-sm-end ">
+                  <div class="text-nowrap me-1">
+                    <%- include('../../Partials/components/rating', {rating: vendor.review.average_note}) %>
+                  </div>
+                  <span class="opacity-70">
+                    <%- include('../../Partials/components/numberReview', {NUMBER_OF_REVIEWS: vendor.review.number_review}) %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% if (product.productDetails.length) { %>
+          <div class="card card-deep-shadow px-3 px-md-4 py-4 border-0 my-4">
+            <h5 class="mb-4 mt-2">Product details :</h5>
+            <% for(let i = 0; i < product.productDetails.length; i++) { %>
+            <div class="d-flex justify-content-between product-description-content">
+              <p class="" style="width: 40%;"><b><%=product.productDetails[i].details%></b></p>
+              <p class="" style="width: calc(60% - 10px);"><%=product.productDetails[i].detailsDescription%></p>
+            </div>
+            <% } %>
+          </div>
+          <% } %>
+
+          <div class="card card-deep-shadow px-3 px-md-4 py-4 my-4">
+            <h5 class="mb-4 mt-2">Product description :</h5>
+            <p class="pb-1 mb-1"><%-product.description%></p>
+          </div>
+
+          <% if (product.shipping_option.length) { %>
+          <div class="card card-deep-shadow pb-2 pt-4 px-3 px-md-4 mt-3">
+            <h3 class="h5 mt-2 mb-3">Available Shipping Option</h3>
+            <div class="list-unstyled mb-4 d-flex flex-wrap justify-content-between">
+              <!-- Find Better Svg -->
+              <% for(let i = 0; i < product.shipping_option.length; i++) { %>
+              <div class="d-flex align-items-center mb-2" style="width: calc(50% - 5px);">
+                <i class="bx bxs-plane-alt text-primary fs-xl me-2"></i>
+                <%=product.shipping_option[i].option_description%>
+                <span class="ms-2"><b>
+                    <% if (product.shipping_option[i].option_price > 0) { %>
+                    + <%=product.shipping_option[i].option_price%>$
+                    <% } else if (product.shipping_option[i].option_price < 0) { %>
+                    <%=product.shipping_option[i].option_price%>$
+                    <% } else { %>
+                    0$
+                    <% } %>
+                  </b>
+                </span>
+              </div>
+              <% } %>
+            </div>
+          </div>
+          <% } %>
+
+
+
+          <% if (product.selection_1) { %>
+          <div class="card card-deep-shadow pb-2 pt-4 px-3 px-md-4 mt-3">
+            <h3 class="h5 mt-2 mb-3"><%=product.selection_1.selection_name%></h3>
+            <div class="list-unstyled mb-4 d-flex flex-wrap justify-content-between">
+              <!-- Find Better Svg -->
+              <% for(let i = 0; i < product.selection_1.selection_choices.length; i++) { %>
+              <div class="d-flex align-items-center mb-2" style="width: calc(50% - 5px);">
+                <i class="bx bx-spreadsheet text-primary fs-xl me-2 mt-1"></i>
+                <%=product.selection_1.selection_choices[i].choice_name%>
+                <span class="ms-2"><b>
+                    <% if (product.selection_1.selection_choices[i].choice_price > 0) { %>
+                    + <%=product.selection_1.selection_choices[i].choice_price%>$
+                    <% } else if (product.selection_1.selection_choices[i].choice_price < 0) { %>
+                    <%=product.selection_1.selection_choices[i].choice_price%>$
+                    <% } else { %>
+                    0$
+                    <% } %>
+                  </b>
+                </span>
+              </div>
+              <% } %>
+            </div>
+          </div>
+          <% } %>
+
+          <% if (product.selection_2) { %>
+          <div class="card card-deep-shadow pb-2 pt-4 px-3 px-md-4 mt-3">
+            <h3 class="h5 mt-2 mb-3"><%=product.selection_2.selection_name%></h3>
+            <div class="list-unstyled mb-4 d-flex flex-wrap justify-content-between">
+              <% for(let i = 0; i < product.selection_2.selection_choices.length; i++) { %>
+              <div class="d-flex align-items-center mb-2" style="width: calc(50% - 5px);">
+                <i class="bx bx-spreadsheet text-primary fs-xl me-2 mt-1"></i>
+                <%=product.selection_2.selection_choices[i].choice_name%>
+                <span class="ms-2"><b>
+                    <% if (product.selection_2.selection_choices[i].choice_price > 0) { %>
+                    + <%=product.selection_2.selection_choices[i].choice_price%>$
+                    <% } else if (product.selection_2.selection_choices[i].choice_price < 0) { %>
+                    <%=product.selection_2.selection_choices[i].choice_price%>$
+                    <% } else { %>
+                    0$
+                    <% } %>
+                  </b>
+                </span>
+
+              </div>
+              <!-- <div class="list-card d-flex my-2">
+                <div class="list-number d-flex align-items-center justify-content-around ps-2">
+                  <span class="d-flex align-items-center"><i class="bx bx-spreadsheet"></i></span>
+                </div>
+                <div class="list-content d-flex align-items-center justify-content-around px-3 w-100">
+                  <span>
+                    <%=product.selection_2.selection_choices[i].choice_name%> : +
+                    <%=product.selection_2.selection_choices[i].choice_price%>
+                  </span>
+                </div>
+              </div> -->
+              <% } %>
+            </div>
+          </div>
+          <% } %>
+
+          <hr class="my-2 mt-5">
+          <!-- Review Section -->
+          <h2 class="h3 mb-4 mt-4">Reviews :</h2>
+          <% if (!paginatedReviews.results.length) { %>
+          <p>This Product Doesnt have any Review Yet</p>
+          <% } else { %>
+          <%- include('../../Partials/render/reviews', {REVIEWS: paginatedReviews.results , NEXTPAGE: paginatedReviews.nextPage, PADDING: 4}) %>
+          <% } %>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- Footer -->
+  <%- include('../../Partials/Statics/Footer') %>
+</body>
+
+</html>

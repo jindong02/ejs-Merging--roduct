@@ -1,0 +1,38 @@
+<div>
+    <div class="message-entry">
+        
+        <% if (PREVIOUS_MESSAGE?.sender !== MESSAGE?.sender) { %>
+          <img src="<%=OTHER_USER_IMGPATH%>" class="smedium-rc rounded-circle" width="40" alt="Msg Sender"/>
+          <div class="position-relative d-flex align-items-center py-2 px-3 ms-2">
+        <% } else { %> 
+          <div class="position-relative py-2 px-3" style="margin-left: 3.5rem;">
+        <% } %>
+        <div class="message-text" style="border-top-right-radius: 0.5rem; border-bottom-right-radius: 0.5rem; border-bottom-left-radius: 0.5rem;">
+        
+            <%- include('./messageContent', {MESSAGE}) %>
+        
+            <% if (MESSAGE.viewedMessage && LASTMESSAGE) { %>
+                <p class="fs-sm text-primary ms-1 position-absolute m-0" style="right: 0px;bottom: -25px;">
+                    <%- include ("../../../public/assets/img/icons/check-double.svg") %>
+                    Read
+                </p>
+            <% } %>
+
+
+            <% if (SHOW_POPUP) { %>
+                <input id="reply-message-input-<%=MESSAGE_POSITION%>" type="checkbox" hidden></input> <!-- when checked css shows next element -->
+                <%- include('../Popup/Reply-popup', {
+                    MESSAGE,
+                    MESSAGE_POSITION,
+                    CONVERSATION_ID,
+                  }) %>
+
+                <label title="Reply to this message" for="reply-message-input-<%=MESSAGE_POSITION%>" class="delete-message-button b-edit btn">
+                  <i class='bx bx-reply' style="color: black;"></i>
+                </label>
+            <% } %>
+
+        </div>
+    </div>
+ </div>
+</div>

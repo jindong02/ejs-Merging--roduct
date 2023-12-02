@@ -1,0 +1,77 @@
+
+<% const settingsLinks = [
+  { 
+    redirectLink: '/user/settings/security',
+    text: 'Security Settings',
+    icons: "<i class='bx bx-lock fs-xl opacity-60 me-2'></i>"
+  },
+  { 
+    redirectLink: '/user/settings/privacy',
+    text: 'Privacy Settings',
+    icons: "<i class='bx bx-mask fs-xl opacity-60 me-2'></i>"
+  },
+  { 
+    redirectLink: '/user/settings/payment',
+    text: 'Payment Settings',
+    icons: "<i class='bx bxs-credit-card fs-xl opacity-60 me-2'></i>"
+  },
+  { 
+    redirectLink: '/user/settings/notifications',
+    text: 'Notifications',
+    icons: "<i class='bx bx-bell fs-xl opacity-60 me-2'></i>"
+  },
+  { 
+    redirectLink: '/user/settings/savedProducts',
+    query: '?productPage=1',
+    text: 'Saved Products',
+    icons: "<i class='bx bx-bookmark fs-xl opacity-60 me-2'></i>"
+  },
+] %>
+
+
+
+<aside class="col-lg-4 col-md-4 pb-5 mt-n5">
+    <div class="position-sticky" style="top: 45px;">
+      <div class="text-center mt-5">
+        <div class="card card-deep-shadow  px-5 pb-5">
+        <div class="d-table position-relative mx-auto mt-2 mt-lg-4 pt-5 mb-3">
+          <img src="<%=authuser.img_path%>" class="d-block big-rc rounded-circle" width="120" alt="<%=authuser.username%>">
+        </div>
+        <h2 class="h5 mb-1"><%=authuser.username%></h2>
+        <p class="fs-sm mb-2"><%=authuser.job%></p>
+        <a href='/user/profile/edit?productPage=1&reviewPage=1' class="mb-3">Edit Profile</a>
+        <hr class="my-2">
+        <div id="account-menu" class="list-group-flush d-md-block mt-3">
+
+        <% for(let i = 0; i < settingsLinks.length; i++) { %>
+          <a href="<%=settingsLinks[i].redirectLink%><%=settingsLinks[i].query%>" class="list-group-item  d-flex align-items-center border-0
+                <% if(url[0] === settingsLinks[i].redirectLink) { %>
+                    active
+                <% } %>">
+                <%-settingsLinks[i].icons%>
+                <%=settingsLinks[i].text%>
+              </a>
+        <% } %>
+
+
+          <% if (authuser.authorization === 'vendor') { %>
+            <a href="/orders?clientsOrders=true&ordersPage=1" class="list-group-item d-flex align-items-center border-0">
+              <i class='bx bx-store-alt fs-xl opacity-60 me-2'></i>
+              Your Clients Order
+            </a>
+          <% } %>
+
+          <a href="/orders?ordersPage=1" class="list-group-item d-flex align-items-center border-0">
+            <i class="bx bx-shopping-bag fs-xl opacity-60 me-2"></i>
+            Your Orders
+          </a>
+
+          <a href="/logout" class="list-group-item d-flex align-items-center">
+            <i class="bx bx-log-out fs-xl opacity-60 me-2"></i>
+            Sign Out
+          </a>
+        </div>
+      </div>
+    </div>
+    </div>
+  </aside>

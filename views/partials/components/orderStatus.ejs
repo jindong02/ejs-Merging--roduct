@@ -1,0 +1,21 @@
+<% switch(STATUS) { case 'AWAITING_INFORMATION' : %>
+    <span class="ms-2 badge bg-primary">Awaiting Information</span>
+    <%break case 'AWAITING_PAYMENT' : %>
+        <span class="ms-2 badge bg-info">Awainting Payment</span>
+        <%break case 'AWAITING_SHIPMENT' : %>
+            <span class="ms-2 badge bg-warning">Awaiting Shipment</span>
+            <%break case 'SHIPPED' : %>
+                <span class="ms-2 badge bg-success">Shipped</span>
+                <%break case 'RECEIVED' : %>
+                    <span class="ms-2 badge bg-success">Recieved</span>
+                    <%break case 'FINALIZED' : %>
+                        <span class="ms-2 badge bg-primary">Finalized</span>
+                        <%break case 'REJECTED' : %>
+                            <span class="ms-2 badge bg-danger">Rejected</span>
+                            <%break case 'EXPIRED' : %>
+                                <span class="ms-2 badge bg-black text-white">Expired</span>
+                                <%break case 'DISPUTE_IN_PROGRESS' : %>
+                                    <span class="ms-2 badge bg-danger">Dispute in Progress</span>
+                                    <%break case 'DISPUTED' : %>
+                                        <span class="ms-2 badge bg-danger">Disputed</span>
+                                        <%break } %>

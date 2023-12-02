@@ -1,0 +1,55 @@
+ 
+ <% const ADMINROUTE = '/admin/' %>
+
+
+ <aside id="componentsNav" class="offcanvas-expand-lg position-fixed top-0 start-0 border-end-lg">
+    <div class="aside-scroller offcanvas-body swiper w-100 p-4">
+
+        <div class="swiper-wrapper">
+            <div class="swiper-slide h-auto">
+                <h3 class="fs-lg text-primary">Resolve Disputes </h3>
+                <div class="list-group list-group-flush border-bottom pb-3 mb-4 mx-n4">
+                    <a href="<%=ADMINROUTE%>disputes?disputesPage=1" class="docs-link-item border-0 py-2 px-4 active"
+                        >Disputes Awaiting Admin</a
+                    >
+                    <a href="<%=ADMINROUTE%>disputes?disputesPage=1&adminDispute=true" class="docs-link-item border-0 py-2 px-4"
+                        >Your Disputes</a
+                    >
+                </div>
+                <h3 class="fs-lg text-primary">Promote User</h3>
+                <div class="list-group list-group-flush border-bottom pb-3 mb-4 mx-n4">
+                    <a href="<%=ADMINROUTE%>promote-user?usersPage=1" class="docs-link-item border-0 py-2 px-4"
+                        >Promote User</a
+                    >
+                </div>
+                <h3 class="fs-lg text-primary">Investigate Reports</h3>
+                <div class="list-group list-group-flush border-bottom pb-3 mb-4 mx-n4">
+                    <a href="<%=ADMINROUTE%>reports?reportsPage=1" class="docs-link-item border-0 py-2 px-4"
+                        >Reports</a
+                    >
+                    <a href="<%=ADMINROUTE%>reports?archived=true&reportsPage=1" class="docs-link-item border-0 py-2 px-4"
+                        >Archived Reports</a
+                    >
+                    <a href="<%=ADMINROUTE%>ban-user?reportsPage=1" class="docs-link-item border-0 py-2 px-4"
+                    >Banning Request</a
+                    >
+                    <% if (authuser.authorization === 'superadmin') { %>
+                    <a href="<%=ADMINROUTE%>ban-user?reportsPage=1" class="docs-link-item border-0 py-2 px-4"
+                        >Banning Request</a
+                    >
+                    <% } %>
+                </div>
+                <h3 class="fs-lg text-primary">Read Feedbacks</h3>
+                <div class="list-group list-group-flush border-bottom pb-3 mb-4 mx-n4">
+                    <a href="<%=ADMINROUTE%>feedback?feedbackPage=1" class="docs-link-item border-0 py-2 px-4"
+                        >Read Feedbacks</a
+                    >
+                    <a href="<%=ADMINROUTE%>feedback?feedbackPage=1&archived=true" class="docs-link-item border-0 py-2 px-4"
+                    >Archived Feedbacks</a
+                    >
+                </div>
+            </div>
+        </div>
+        <div class="swiper-scrollbar end-0"></div>
+    </div>
+</aside>

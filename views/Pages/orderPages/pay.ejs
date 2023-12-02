@@ -1,0 +1,47 @@
+<%- include('../../Partials/Statics/Head', {page: '- Pay Order' }) %>
+
+  <body>
+    <main class="page-wrapper">
+      <%- include('../../Partials/Statics/Navbar') %>
+
+        <section class="pt-2 pt-lg-3 pb-lg-4">
+          <div class="container align-items-center text-center">
+            <nav class="py-4 mb-5" aria-label="breadcrumb">
+              <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                  <a href="">...</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="">Order</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="">Provide Information</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Pay</li>
+              </ol>
+            </nav>
+
+            <img src="/default/qr_code.jpg" class="rounded-3" alt="Qr Code" style="width: 100%; max-width: 306px" />
+
+            <p class="mb-3 mt-4">
+              Send
+              <span class="text-primary">
+                <%=order.orderDetails.totalPrice%>$<span class="mx-1">(<%=(order.orderDetails.xmrPrice || 0).toFixed(5)
+                      %> XMR)</span>
+              </span>
+              To this <span class="text-monero">Monero</span> address:
+            </p>
+
+            <p class="text-monero card-deep-shadow">
+              <span class="card card-body border-0">
+                <%=order.orderMoneroAddress%>
+              </span>
+            </p>
+
+            <a href="/order-resume/<%=order.id%>" class="btn btn-primary shadow-primary mt-3 mb-5">Continue</a>
+          </div>
+        </section>
+
+        <%- include('../../Partials/Statics/Footer') %>
+    </main>
+  </body>

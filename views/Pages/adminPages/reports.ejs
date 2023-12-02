@@ -1,0 +1,197 @@
+<%- include('../../Partials/Statics/Head', {page: '- Reports List'}) %>
+
+<body class="documentation-view">
+  <%- include('../../Partials/Statics/Navbar') %>
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <input id="mobile-menu-toggle" type="checkbox" hidden />
+  <label for="mobile-menu-toggle"
+    class="docs-aside-open-close"><%- include ("../../../public/assets/img/icons/move-left.svg") %></label>
+  <main class="page-wrapper">
+    <label class="clickout-mobile-menu" for="mobile-menu-toggle"></label>
+    <div>
+      <%- include('../../Partials/sidebarAdmin') %>
+
+      <!-- Page container -->
+      <div class="docs-con pt-5">
+
+        <div class="container-fluid container pt-4 pt-lg-5 pb-2 pb-lg-4">
+
+          
+          <div class="pt-3 pb-4 py-sm-4 pt-lg-4">
+            <%- include('../../Partials/components/flashMessages') %>
+          </div>
+
+
+          <div>
+            <h4>Reports:</h4>
+          </div>
+
+          <div class="filter-wrap d-lg-flex align-items-center justify-content-between pt-3 mt-lg-2">
+            <h1 class="me-3"></h1>
+            <form action="/report-filter" method="POST">
+              <div class="d-md-flex mb-3">
+                <select class="form-select me-4 mb-2 mb-md-0" name="reason" style="min-width: 240px;" required>
+                  <option value="all"
+                  <% if (!query.reason) { %>
+                    selected
+                  <% } %> >All</option>
+
+                  <option value="scam"
+                  <% if (query.reason === 'scam') { %>
+                    selected
+                  <% } %> >Scam</option>
+
+                  <option value="blackmail"
+                  <% if (query.reason === 'blackmail') { %>
+                    selected
+                  <% } %> >Blackmail</option>
+
+                  <option value="information"
+                  <% if (query.reason === 'information') { %>
+                    selected
+                  <% } %> >Private Infotmation Gathering</option>
+
+                  <option value="other"
+                  <% if (query.reason === 'other') { %>
+                    selected
+                  <% } %> >Other</option>
+                </select>
+                <select class="form-select me-4 mb-2 mb-md-0" name="archived" style="min-width: 240px;" required>
+                  <option value="all"
+                  <% if (!query.archived) { %>
+                    selected
+                  <% } %>
+                  >Archived/Not Archived</option>
+                  
+                  <option value="true"
+                  <% if (query.archived === 'true') { %>
+                    selected
+                  <% } %>
+                  >Archived</option>
+
+                  <option value="false"
+                  <% if (query.archived === 'false') { %>
+                    selected
+                  <% } %>
+                  >Not Archived</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+              </div>
+            </form>
+          </div>
+
+          <% if (!reports.results.length) { %>
+            <h6 class="mt-5" style="text-align: center">No Reports for the moments</h6>
+            <h6 class="mt-4" style="text-align: center">Yall are so good !!</h6>
+          <% } %>
+
+          <% for(let i = 0; i < reports.results.length; i++) { %>
+
+              <input id="report-resolve-<%=i%>" type="checkbox" hidden></input>
+              <!-- when checked css shows next element -->
+              <%- include('../../Partials/Popup/ResolveReport-popup', {checkboxInputId: "report-resolve-" + i, action : "/resolve-report/" + reports.results[i].id, method: "POST", report: reports.results[i]}) %>
+
+
+              <article class="card card-hover border-0 card-deep-shadow overflow-hidden mt-4">
+                <div class="row g-0">
+                  <div>
+                    <div class="card-body">
+
+                      <div class="d-flex align-items-center mb-3">
+                        <p class="mb-1">Reason: <span class="ms-2"><%=reports.results[i].reason %></span></p>
+                      </div>
+
+                      <span>
+                        <p class="mb-0">Message :</p>
+                        <p class="d-flex align-items-center text-decoration-none me-3">
+                          <%= reports.results[i].message %>
+                        </p>
+                      </span>
+
+
+                      <span>
+                        <p class="mb-0"><b>Username/Slug :</b></p>
+                        <a class="d-flex align-items-center fw-bold text-decoration-none me-3 mb-0"
+                          <% if (reports.results[i].type === 'vendor') { %>
+                          href="/user/profile/<%=reports.results[i].reference_id%>?productPage=1&reviewPage=1" <% } else { %>
+                          href="/product/<%=reports.results[i].reference_id%>?reviewPage=1" <% } %>>
+                          <%= reports.results[i].reference_id %>
+                        </a>
+                      </span>
+
+                      <hr class="mt-2 mb-2">
+
+                      <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <div class="d-flex align-items-center py-2">
+                          <span>
+                            <p class="mb-0">Reporter:</p>
+                            <% if (reports.results[i].username) { %>
+                            <a href="/user/profile/<%=reports.results[i].username%>?productPage=1&reviewPage=1"
+                              class="d-flex align-items-center fw-bold text-decoration-none me-3 mb-0">
+                              <%= reports.results[i].username %>
+                            </a>
+                            <% } else { %>
+                            <p class="mb-0">Not Included</p>
+                            <% } %>
+                          </span>
+
+                          <span class="ms-4">
+                            <p class="mb-0">Type:</p>
+                            <p class="d-flex align-items-center fw-bold text-decoration-none me-3 mb-0">
+                              <%= reports.results[i].type %>
+                            </p>
+                          </span>
+
+
+                          <span class="ms-4 omit-item">
+                            <p class="mb-0">Link:</p>
+                            <a <% if (reports.results[i].type === 'vendor') { %>
+                              href="/user/profile/<%=reports.results[i].reference_id%>?productPage=1&reviewPage=1"
+                              <% } else { %> href="/product/<%=reports.results[i].reference_id%>?reviewPage=1" <% } %>
+                              class="d-flex align-items-center fw-bold text-decoration-none me-3 mb-0">
+                              Investigate
+                            </a>
+                          </span>
+                        </div>
+
+
+
+                        <div class="d-flex flex-column flex-sm-row py-2 responsive-column">
+                          <form action="/archive-report/<%=reports.results[i].id%>?<%=url[1]%>" method="POST">
+                            <% if (!reports.results[i].archived) { %>
+                            <button type="submit" class="btn btn-success">Archive Reports</button>
+                            <% } else { %>
+                            <button type="submit" class="btn btn-primary">Unarchive Reports</button>
+                            <% } %>
+                          </form>
+
+                          <form action="/dismiss-report/<%=reports.results[i].id%>?<%=url[1]%>" method="POST">
+                            <button type="submit" class="btn btn-primary ms-3">
+                              Dismiss Report
+                            </button>
+                          </form>
+
+
+                          <label for="report-resolve-<%=i%>" class="btn btn-danger ms-3">
+                            Take Action
+                          </label>
+
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+              <% } %>
+              <div class="mt-5">
+                <%- include('../../Partials/components/pagination', {nextPage: reports.nextPage, currentPage: parseInt(query.reportsPage), queryName: 'reportsPage'}) %>
+              </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <%- include('../../Partials/Statics/Footer') %>
+</body>

@@ -1,0 +1,45 @@
+<%- include('../../Partials/Statics/Head', {page: '- 2 Step Verification'}) %>
+  <body>
+    <%- include('../../Partials/Statics/Navbar') %>
+
+    <main class="page-wrapper d-grid" style="place-content: center;">
+
+      <section class="position-relative h-100 pt-5 pb-4">
+
+        <%- include('../../Partials/components/flashMessages') %>
+        
+        <div class="container d-flex flex-wrap justify-content-center justify-content-xl-start h-100 pt-5 p-5 card-deep-shadow" style="border-radius: 5px; background:#212121">
+          <div class="w-100 align-self-end " style="max-width: 526px;">
+            <h1 class="text-center text-xl-center">2 Step Verification</h1>
+            <% if (query.type === 'email') { %>
+              <p class="text-center text-xl-start mb-1 mt-3">Please Check your Email and verify your Identity</p>
+              <p class="text-center text-xl-start my-0 pb-3"><b>Didnt recieve the Email ?</b><a class="ms-2" href="/login">Log In Again</a></p>
+            <% } else { %> 
+              <p class="text-center text-xl-start pb-4 mt-3 mb-0">Please Decrypt this Phrase to verify your Identity</p>
+              <p>
+                <pre disabled><%=atob(query.encrypted)%></pre>
+              </p>
+            <% } %>
+
+
+            <form class="needs-validation mb-2" action="/2fa?<%=url[1]%>" method="POST">
+              <div class="position-relative mb-4">
+                <label for="code" class="form-label fs-base">
+                  <% if (query.type === 'email') { %>
+                    Code
+                  <% } else { %>
+                    Decrypted Phrase
+                  <% } %>
+                </label>
+                <input type="text" id="code" name="code" class="form-control form-control-lg" required>
+              </div>
+              <button type="submit" class="btn btn-primary shadow-primary btn-lg w-100">Confirm Identity</button>
+            </form>
+          </div>
+        </div>
+        
+     </section>
+    </main>
+
+  </body>
+</html>

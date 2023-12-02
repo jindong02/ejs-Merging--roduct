@@ -1,0 +1,22 @@
+<nav class="py-4" aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+        <% for (let i = 0; i < NAVLINK.length; i++) { %>
+
+            <% if (NAVLINK[i].active) { %>
+                <li class="breadcrumb-item active" aria-current="page">
+            <% } else { %> 
+                <li class="breadcrumb-item">
+            <% } %>
+
+
+            <% if (NAVLINK[i].redirect_link) { %>
+                <a href="<%=NAVLINK[i].redirect_link%>"><%=NAVLINK.content%></a>
+            <% } else { %> 
+                <%=NAVLINK.content%>
+            <% } %>
+
+            </li>
+
+        <% } %>
+    </ol>
+  </nav>

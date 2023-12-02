@@ -1,0 +1,74 @@
+<%- include('../../Partials/Statics/Head', {page: query.search ? "- " + query.search : "- Search"}) %>
+<body>
+    <%- include('../../Partials/Statics/Navbar') %>
+
+<main class="page-wrapper">
+<section class="container product-container pt-5"  style="max-width: 1520px;">
+
+    <!-- Breadcrumb -->
+    <nav class="pb-4 pt-2" aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="landing-online-courses.html"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Products</li>
+        </ol>
+    </nav>
+
+
+    <!-- Page title + Filters -->
+    <div class="d-lg-flex align-items-center justify-content-between py-4 mt-lg-2">
+      <h1 class="h2 mb-4">Products:</h1>
+      <form action="/search-products?<%=url[1]%>" method="POST">
+        <div class="d-flex justify-content-between search-wrap">
+          <div class="position-relative me-4 mb-3 w-100">
+            <input type="text" name="search" class="form-control pe-5" placeholder="Search for products" maxlength="500">
+            <i class="bx bx-search text-nav fs-lg position-absolute top-50 end-0 translate-middle-y me-3"></i>
+          </div>
+            <!-- <select class="form-select me-4 mb-2 mb-md-0" name="category" style="min-width: 240px;">
+                <option value="All">All categories</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Mobile Development">Mobile Development</option>
+                <option value="Programming">Programming</option>
+                <option value="Game Development">Game Development</option>
+                <option value="Software Testing">Software Testing</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Network & Security">Network &amp; Security</option>
+            </select> -->
+          <button type="submit" class="btn btn-primary mb-3">Search</button>
+        </div>
+      </form>
+    </div>
+      <% if (paginatedProducts.results.length) { %>
+        <%- include('../../Partials/render/products', { products: paginatedProducts.results , nextPage: paginatedProducts.nextPage, COLUMN_NB: 4 }) %>
+      <% } else { %>
+        <h3 class="me-3">No Products found...</h3>
+      <% } %>
+
+
+          <!-- Sign up CTA -->
+          <div class="card card-deep-shadow  rounded-3 my-2 my-md-4 my-lg-5 py-5 px-3 px-md-0">
+            <div class="row align-items-center">
+              <div class="col-md-5 offset-lg-1 text-center text-md-start ps-md-5 ps-lg-0 ps-xl-5 pb-2 pb-md-0 mb-4 mb-md-0">
+                <p class="lead mb-3">What to become a Vendor ?</p>
+                <h2 class="h1 pb-2 pb-md-4">Just make your demand <span class="text-primary">Here</span> and start to sell soon !</h2>
+                <form action="/awaiting-promotion" method="POST" >
+                  <button class="btn btn-primary btn-lg" type="submit">Become Vendor</button>
+                </form>
+              </div>
+              <div class="col-lg-6 col-md-7">
+                <div class="d-table mx-auto">
+                <!-- Change Img -->
+                  <img src="assets/img/landing/online-courses/steps/04-dark.svg" class="d-dark-mode-none" width="380" alt="Illustration">
+                  <img src="assets/img/landing/online-courses/steps/04-light.svg" class="d-none d-dark-mode-block" width="380" alt="Illustration">
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+</section>
+</main>
+<%- include('../../Partials/Statics/Footer') %>
+</body>
+</html>

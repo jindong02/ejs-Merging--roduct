@@ -1,0 +1,152 @@
+<%- include('../../Partials/Statics/Head', {page: '- Disputes List'}) %>
+
+<body class="documentation-view">
+  <%- include('../../Partials/Statics/Navbar') %>
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <input id="mobile-menu-toggle" type="checkbox" hidden />
+  <label for="mobile-menu-toggle"
+    class="docs-aside-open-close"><%- include ("../../../public/assets/img/icons/move-left.svg") %></label>
+  <main class="page-wrapper">
+    <label class="clickout-mobile-menu" for="mobile-menu-toggle"></label>
+    <div>
+      <%- include('../../Partials/sidebarAdmin') %>
+
+      <!-- Page container -->
+      <div class="docs-con pt-5">
+
+        <div class="container-fluid container pt-4 pt-lg-5 pb-2 pb-lg-4">
+
+                  <div class="pt-3 pb-4 py-sm-4 pt-lg-4">
+                    <%- include('../../Partials/components/flashMessages') %>
+                </div>   
+
+            <% if (query.adminDispute) { %>
+              <div>
+                <h4>Your Disputes:</h4>
+              </div> 
+            <% } else { %> 
+              <div>
+                <h4>Available Disputes:</h4>
+              </div> 
+            <% } %>
+
+            <div class="filter-wrap d-lg-flex align-items-center justify-content-between pt-3 mt-lg-2">
+              <h1 class="me-3"></h1>
+              <form action="/disputes-filter?adminDispute=<%=query.adminDispute ? true : false%>" method="POST">
+                <div class="d-md-flex mb-3">
+                  <select class="form-select me-4 mb-2 mb-md-0" name="reason" style="min-width: 240px;" required>
+                    <option value="all"
+                    <% if (query.reason === 'all'){ %>
+                      selected
+                    <% } %> >All reason</option>
+                    <option value="Product Broken"
+                    <% if (query.reason === 'Product Broken'){ %>
+                      selected
+                    <% } %> >Product Broken</option>
+                    <option value="Product Late"
+                    <% if (query.reason === 'Product Late'){ %>
+                      selected
+                    <% } %> >Product Late</option>
+                    <option value="Other"
+                    <% if (query.reason === 'Other'){ %>
+                      selected
+                    <% } %> >Other</option>
+                  </select>
+                  <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+              </form>
+            </div>
+            
+
+            <% if (!query.adminDispute && !disputes.results.length) { %>
+              <h6 class="mt-5" style="text-align: center">No dispute Needing resolving</h6>
+              <h6 class="mt-4" style="text-align: center">Keep it up !</h6>
+            <% } %>
+            <% if (query.adminDispute && !disputes.results.length) { %>
+              <h6 class="mt-5" style="text-align: center">You dont have any Disputes Taken</h6>
+              <p class="mt-4 text-primary" style="text-align: center"><a href="/disputes?disputesPage=1" class="my-3">Go take somes...</a></p>
+            <% } %>  
+
+
+              <% for(let i = 0; i < disputes.results.length; i++) { %>
+              <article class="dispute-card card card-hover border-0 card-deep-shadow overflow-hidden mt-4">
+                <div class="row g-0">
+                  <div>
+                    <div class="card-body">
+                      <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                        <p class="mb-2 me-2">Order id: <a
+                            href="/order-resume/<%=disputes.results[i].id%>"><%=disputes.results[i].id%></a></p>
+                        <p class="mb-2">Status: <span> <span class="ms-2 badge bg-danger">Dispute in
+                              Progress</span></span></p>
+                      </div>
+                      <h3 class="h4">
+                        <a href="/order-resume/<%=disputes.results[i].id%>"><%=disputes.results[i].product.title%></a>
+                      </h3>
+
+                      <span>
+                        <p class="mb-0">Total Price:</p>
+                        <p class="d-flex align-items-center fw-bold text-decoration-none me-3">
+                          <%= disputes.results[i].orderDetails.totalPrice %> $
+                        </p>
+                      </span>
+
+                      <hr class="mt-4 mb-2">
+
+                      <div class="d-flex align-items-center flex-wrap">
+
+                        <span class="mt-2">
+                          <p class="mb-0">Vendor:</p>
+                          <a href="/user/profile/<%=disputes.results[i].vendor%>?productPage=1&reviewPage=1"
+                            class="d-flex align-items-center fw-bold text-decoration-none">
+                            <%= disputes.results[i].vendor%>
+                          </a>
+                        </span>
+
+                        <span class="mt-2 mx-5">
+                          <p class="mb-0">Buyer:</p>
+                          <a class="d-flex align-items-center fw-bold text-decoration-none">
+                            <%= disputes.results[i].buyer%>
+                          </a>
+                        </span>
+
+                        <span class="mt-2">
+                            <p class="mb-0">Admin:</p>
+                            <p class="mb-0"><%= disputes.results[i].disputesSettings?.disputeAdmin ? disputes.results[i].disputesSettings.disputeAdmin : 'Awaiting Admin...'%></p>
+                          </span>
+
+                          <span class="mt-2 ms-4">
+                            <p class="mb-0">Reason of Dispute:</p>
+                            <p class="mb-0 fw-bold"><%= disputes.results[i].disputesSettings?.disputeReason%></p>
+                          </span>
+
+
+                        
+                        <% if (query.adminDispute) { %>
+                        <span class="mt-2 ms-auto full-width">
+                          <a href="/order-resume/<%=disputes.results[i].id%>" class="btn btn-primary">See Disputes >></a>
+                        </span>
+                        <% } else { %>
+                        <span class="mt-2 ms-auto full-width">
+                          <form action="/disputes/<%=disputes.results[i].id%>" method="POST">
+                            <button type="submit" class="btn btn-primary">Take Disputes >></button>
+                          </form>
+                        </span>
+                        <% } %>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+              <% } %>
+              <div class="mt-5">
+                <%- include('../../Partials/components/pagination', {nextPage: disputes.nextPage, currentPage: parseInt(query.disputesPage), queryName: 'disputesPage'}) %>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <%- include('../../Partials/Statics/Footer') %>
+</body>

@@ -1,0 +1,22 @@
+<% let i = 0 %>
+<% for(i = 0; i < rating; i++) { %>
+    <i class="bx bxs-star 
+    <% if (rating <= 1) { %>
+        text-danger
+    <% } else if (rating <= 2) { %>
+        text-orange
+    <%} else if (rating <= 3) { %>
+        text-warning
+    <%} else if (rating <= 4) { %>
+        text-success
+    <%} else { %> 
+        text-primary
+    <% } %>">
+</i>
+<% } %>
+<% for(i; i < 5; i++) { %>
+    <i class="bx bx-star text-muted opacity-75"></i>
+<% } %>
+
+<% rating = rating.toString() %>
+<span class="opacity-70"><%=rating.slice(0, rating.indexOf('.') + 3)%>/5</span>

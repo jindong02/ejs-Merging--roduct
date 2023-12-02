@@ -1,0 +1,93 @@
+<%- include('../../Partials/Statics/Head', {page: '- Submit Information'}) %>
+
+
+  <!-- Body -->
+<body>
+
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+      <%- include('../../Partials/Statics/Navbar') %>
+
+      <section class="container submit-info-container mt-3 mb-2 mb-md-4 mb-lg-5 pt-lg-2 pb-5">
+
+
+        <nav class="py-4" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a href="">...</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="">Order</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Provide Information</li>
+            </ol>
+          </nav>
+
+          <%- include('../../Partials/components/flashMessages') %>
+
+        
+        <div class="d-flex align-items-center justify-content-between mb-4 pb-1 pb-md-3">
+          <h1 class="h2 mb-0">Provide your Information</h1>
+        </div>
+
+        <!-- Blog list + Sidebar -->
+        <div class="row">
+          <div class="col-md-8 pb-5 mb-lg-2 mb-lg-4" style="border: none;">
+
+            <% if (product.message) { %>
+            <div class="card card-body card-deep-shadow px-3 px-md-4 mb-3">
+              <h6 class="mb-3 mt-2">Vendor Message :</h6>
+              
+              <p class="fs-sm mb-1"><%-product.message%></p>
+        </div>
+        <% } %>
+
+            <div class="card card-body card-deep-shadow px-3 px-md-4">
+            <form action="/submit-info/<%=order.id%>" method="POST">
+              <p class="fs-sm opacity-70 mt-0 mb-2">Dont Forget to Encrypt your Information for a maximun privacy !</p>
+            <textarea name="content" class="form-control" id="textarea-input" rows="10" placeholder="Provide your Information" minlength="2" maxlength="3000" required></textarea>
+
+          <div class="d-flex align-items-center mt-3 responsive-column">
+            <span class="form-check d-flex align-items-center">
+                <input class="form-check-input mt-0" type="checkbox" id="confirm" required>
+                <label class="form-check-label ms-2" for="confirm">I confirm that all the Information here are correct</label>
+              </span>
+            <button type="submit" class="btn btn-primary shadow-primary ms-auto">Submit Info</button>
+          </div>  
+        </div>
+          </form>
+
+          </div>
+
+
+          <aside class="col-lg-4 col-md-4 pb-5 position-sticky">
+                <div class="position-sticky" style="top: 95px;">
+                      <div class="card card-deep-shadow  px-4 py-3 text-center" style="border: none;">
+                        
+                       
+                        <p class="mt-3"><b>Vendor Public Pgp Key:</b></p>
+                        <hr class="mb-3">
+
+                            <% if (!vendorPgpKeys) { %>
+                                <h6>This Vendor Doesnt have a Pgp Keys</h6>
+                            <% } else { %>
+  
+                              <textarea class="form-control my-3 p-2" style="min-height: 20rem;"><%-vendorPgpKeys%></textarea>
+                            <% } %>
+                      </div>
+                      </div>
+          </aside>
+
+        </div>
+      </section>
+
+    <!-- Footer -->
+    <%- include('../../Partials/Statics/Footer') %>
+    </main>
+
+
+  </body>
+</html>
+

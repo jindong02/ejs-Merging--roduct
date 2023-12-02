@@ -1,0 +1,23 @@
+<div class="popup-dialog dispute-popup">
+    <div class="rounded p-3">
+        <form action="<%=action%>" method="POST">
+    <div class="text pt-2 pb-3">
+          <p class="mb-0">Are you sure that you wish to Disputes this Order ?</p>
+          <p class="fs-sm opacity-70 mt-1 ">If there is a problem, dont hesitate</p>
+
+          <select name="reason" class="form-select mt-4 mx-auto" style="width: 90%" id="">
+            <option value="Product Broken">The Product is faulty/broken</option>
+            <option value="Product Late">I didnt recieve anything</option>
+            <option value="Other">Other</option>
+          </select>
+    </div>
+       <div class="buttons mt-4">
+
+             <button type="submit" class="confirm-button btn btn-primary" name="status" value="dispute">Dispute Order</button>
+
+          <label for="<%=checkboxInputId%>" class="btn btn-danger cancel-button">Cancel</label>
+       </div>
+   </div>
+</form>
+    <label for="<%=checkboxInputId%>" class="popup-close"></label>
+ </div>

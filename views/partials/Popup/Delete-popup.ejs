@@ -1,0 +1,16 @@
+<!--designed to work with css input popup technique - no js -->
+<div class="popup-dialog">
+   <div class="rounded p-3">
+   <div class="text pt-2 pb-3">
+         <p class="mb-0">Are you sure that you wish to delete this <%=TYPE%>?</p>
+         <p class="fs-sm opacity-70 mb-0">This Action is Irreversible</p>
+   </div>
+      <div class="buttons mt-4">
+         <form action="<%=ACTION%>" method="POST">
+            <button type="submit" class="confirm-button btn btn-primary">Delete</button>
+         </form>
+         <label for="<%=CHECKBOX_ID%>" class="btn btn-danger cancel-button">Cancel</label>
+      </div>
+  </div>
+   <label for="<%=CHECKBOX_ID%>" class="popup-close"></label>
+</div>

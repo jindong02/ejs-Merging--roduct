@@ -1,0 +1,51 @@
+<article class="card card-deep-shadow p-3">
+    <div class="row g-0">
+        <div class="col-sm-5 position-relative bg-position-center bg-repeat-0 bg-size-cover rounded-3 overflow-hidden">
+            <a href="/product/<%=PRODUCT.slug%>?reviewPage=1" class="position-absolute top-0 start-0 w-100 h-100">
+                <img src="<%=PRODUCT.img_path[0]%>" class="card-img-top" style="height: 100%; object-fit: cover;" alt="Image">
+            </a>
+        </div>
+        <div class="col-sm-7">
+            <div class="card-body px-0 ps-sm-4 py-2">
+
+                <h3 class="h4 mb-2">
+                    <a href="/product/<%=PRODUCT.slug%>?reviewPage=1">
+                        <% if (PRODUCT.title.length > 50) { %>
+                            <%=PRODUCT.title.slice(0, 50)%>...
+                        <% } else { %> 
+                            <%=PRODUCT.title%>
+                        <% } %>
+                    </a>
+                </h3>
+                <p class="text-primary mt-0 mb-2">
+                    <% if (PRODUCT.salesPrice) { %>
+                        <b><%=PRODUCT.salesPrice%>$</b>
+                        <del class="fs-sm text-muted mb-0 mt-2 ms-1 opacity-70"><b><%=PRODUCT.price%>$</b></del>
+                    <% } else { %>
+                        <b><%=PRODUCT.price%>$</b>
+                    <% } %>
+                </p>
+                <p class="fs-sm mb-3">
+                    <% if (PRODUCT.description.length > 75) { %>
+                        <%=PRODUCT.description.slice(0, 75)%>...
+                    <% } else { %> 
+                        <%=PRODUCT.description%>
+                    <% } %>
+                </p>
+                <div class="d-flex text-muted flex-wrap">
+                    <div class="d-flex me-3">
+                        <p class="fs-sm m-0">Vendor : 
+                            <a href="/user/profile/<%=PRODUCT.vendor%>?productPage=1&reviewPage=1"><%=PRODUCT.vendor%></a>
+                        </p>
+                    </div>
+                    <div class="d-flex me-3 align-items-center">
+                        <%- include('../components/rating', {rating: PRODUCT.review.average_note}) %>
+                        <span class="opacity-70">
+                        <%- include('../components/numberReview', {NUMBER_OF_REVIEWS: PRODUCT.review.number_review}) %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>

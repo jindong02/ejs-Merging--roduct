@@ -1,0 +1,84 @@
+<%- include('../../Partials/Statics/Head', {page: '- Promote User'}) %>
+
+<body class="documentation-view">
+  <%- include('../../Partials/Statics/Navbar') %>
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <input id="mobile-menu-toggle" type="checkbox" hidden />
+  <label for="mobile-menu-toggle"
+    class="docs-aside-open-close"><%- include ("../../../public/assets/img/icons/move-left.svg") %></label>
+  <main class="page-wrapper">
+    <label class="clickout-mobile-menu" for="mobile-menu-toggle"></label>
+    <div>
+      <%- include('../../Partials/sidebarAdmin') %>
+
+      <!-- Page container -->
+      <div class="docs-con pt-5">
+
+        <div class="container-fluid container pt-4 pt-lg-5 pb-2 pb-lg-4">
+
+            <div class="pt-3 pb-4 py-sm-4 pt-lg-4">
+              <%- include('../../Partials/components/flashMessages') %>
+          </div>   
+
+          <div>
+            <h4>Promote User:</h4>
+          </div>
+
+          <% if (!users.results.length) { %>
+            <h6 class="mt-5" style="text-align: center">No User to Promote</h6>
+            <h6 class="mt-4" style="text-align: center">Nice Job</h6>
+
+
+          <% } else { %>
+          <% const usersResult = users.results %>
+          <% for(let i = usersResult.length - 1; i > -1; i--) { %>
+          <div class="user-card card card-body card-deep-shadow d-flex flex-row align-items-center card-hover mt-2">
+            <a href="/user/profile/<%=usersResult[i].username%>?productPage=1&reviewPage=1" class="image-wrap d-flex align-items-center justify-content-around">
+              <img src="<%=usersResult[i].img_path%>" class="d-block big-rc rounded-circle"
+                alt="<%=usersResult[i].username%>">
+            </a>
+            <div>
+              <div class="py-3 mx-auto">
+                <div class="d-flex align-items-center">
+                  <div class="user-label opacity-50 me-4">User :</div>
+                  <h2 class="mb-0">
+                    <a href="/user/profile/<%=usersResult[i].username%>?productPage=1&reviewPage=1">
+                      <%=usersResult[i].username%>
+                    </a>
+                  </h2>
+                </div>
+
+                <div class="d-flex mt-4">
+                  <a href="/user/profile/<%=usersResult[i].username%>?productPage=1&reviewPage=1"
+                    class="btn btn-primary me-sm-4 mb-3 mb-sm-0">
+                    <span>See Profile</span>
+                    <i class='bx bx-show' ></i>
+                  </a>
+                  <form action="/promote-user/<%=usersResult[i].username%>" method="POST">
+                    <button type="submit" class="btn btn-success me-sm-4 mb-3 mb-sm-0">
+                      <span>Promote</span>
+                      <i class='bx bx-upvote' ></i>
+                    </button>
+                  </form>
+                  <form action="/promote-user/<%=usersResult[i].username%>?decline=true" method="POST">
+                    <button type="submit" class="btn btn-danger me-sm-4 mb-3 mb-sm-0">
+                      <span>Refuse</span>
+                      <i class='bx bx-redo' ></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
+          <% } %>
+            <div class="mt-4">
+              <%- include('../../Partials/components/pagination', {nextPage: users.nextPage, currentPage: parseInt(query.usersPage), queryName: 'usersPage'}) %>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <%- include('../../Partials/Statics/Footer') %>
+</body>

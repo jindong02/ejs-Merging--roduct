@@ -1,0 +1,7 @@
+<div>
+<% if (typeof MESSAGE.reply === 'number') { %>
+    <span class="fs-sm opacity-90">““<%= selectedConversation.messages[MESSAGE.reply].content.slice(0, 25)%>””</span>
+    <hr>
+  <% } %>
+    <span><%= MESSAGE.content%></span>
+</div>

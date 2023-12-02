@@ -1,0 +1,170 @@
+<%- include('../../Partials/Statics/Head', {page: "- " + vendor.username}) %>
+
+<body>
+  <%- include('../../Partials/Statics/Navbar') %>
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <main class="page-wrapper">
+
+    <input id="report-vendor-<%=vendor.username%>" type="checkbox" hidden></input>
+    <!-- when checked css shows next element -->
+    <%- include('../../Partials/Popup/Report-popup', { checkboxInputId: "report-vendor-" + vendor.username,  method: "POST", action: '/report/' + vendor.username, type: "vendor"}) %>
+
+    <input type="checkbox" class="d-none" id="contact-checkbox">
+    <%- include('../../Partials/Popup/SendMessage-popup', {Reciever: vendor.id, checkboxInputId: 'contact-checkbox'}) %>
+    
+    <section class="container profile-container pt-5" style="max-width: 1520px;">
+      <!-- Breadcrumb -->
+      <nav class="pb-4 pt-2" aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item">
+            <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/user/profile/<%=vendor.username%>?productPage=1&reviewPage=1">Profile</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page"><%=vendor.username%></li>
+        </ol>
+      </nav>
+
+      <div class="pt-3 pb-4 py-sm-4 pt-lg-4">
+        <%- include('../../Partials/components/flashMessages') %>
+      </div>
+
+      <div class="d-flex pt-3 py-sm-4 pt-lg-4">
+        <h2><%=vendor.username%> Profile Page</h2>
+      </div>
+
+      <div class="row">
+
+        <aside class="col-lg-4 col-md-4 pb-5">
+          <div class="" style="top: 70px;">
+            <div class="card card-body card-deep-shadow border-0 text-center">
+              <img src="<%=vendor.img_path%>" class="d-block big-rc rounded-circle mx-auto mb-3" width="162"
+                height="162" alt="<%=vendor.username%>">
+              <h5 class="fw-medium fs-lg mb-1"><%=vendor.username%></h5>
+              <p class="fs-sm opacity-80 mb-2"><%=vendor.job%></p>
+
+              <% if(authuser && vendor.username === authuser.username) { %>
+              <a href='/user/profile/edit?productPage=1&reviewPage=1' class=" mb-2">Edit my Profile</a>
+              <% } %>
+
+              <div class="text-nowrap me-1 mt-1 mb-3">
+                <%- include('../../Partials/components/rating', {rating: vendor.review.average_note}) %>
+                <span class="opacity-70 ms-1">
+                  <%- include('../../Partials/components/numberReview', {NUMBER_OF_REVIEWS: vendor.review.number_review}) %>
+                </span>
+              </div>
+
+              <!-- Send Message Form  -->
+              <label for='contact-checkbox' class="btn btn-primary">
+                Contact me
+              </label>
+
+
+              <% if (authuser) { %>
+              <label for="report-vendor-<%=vendor.username%>"
+                class="btn-hover-white btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-2 me-4 mt-3">
+                <i class="bx bx-flag"></i>
+              </label>
+              <% } %>
+
+            </div>
+
+
+            <div class="card card-body card-deep-shadow border-0 mt-4">
+
+              <!-- Description -->
+              <div class="mt-2">
+                <h5 class="fw-medium fs-lg mb-1">Profile Description</h5>
+                <% if (vendor.description && vendor.description !== 'undefined') { %>
+                <!--????-->
+                <p class="fs-sm"><%-vendor.description%></p>
+                <% } else { %>
+                <p class="fs-sm">This user doesnt have a description</p>
+                <% } %>
+              </div>
+
+              <!-- Achievement -->
+              <% if (vendor.achievement.length) { %>
+              <div class="mt-2">
+                <hr class="my-2">
+                <h5 class="fw-medium fs-lg mb-1 mt-4">Achievements:</h5>
+                <ul class="list-unstyled mb-3">
+                  <% for(let i = 0; i < vendor.achievement.length; i++) { %>
+                  <li class="d-flex align-items-center mt-3">
+                    <i class="bx bx-medal text-primary fs-xl me-2"></i>
+                    <%=vendor.achievement[i]%>
+                  </li>
+                  <% } %>
+                </ul>
+              </div>
+              <% } %>
+
+
+              <!-- PGP KEYS -->
+              <div class="mt-2">
+                <hr class="my-2">
+                <h5 class="fw-medium fs-lg mt-4 mb-1">Pgp Key</h5>
+                <% if (!vendor.verifiedPgpKeys) { %>
+                <p class="fs-sm">This User Doesnt have a Pgp Key</p>
+                <% } else { %>
+                <textarea class="form-control" style="min-height: 20rem;"><%=vendor.verifiedPgpKeys%></textarea>
+                <% }%>
+
+              </div>
+
+              <!-- Spoken Language -->
+              <% if (vendor.languages.length) { %>
+              <div class="mt-2">
+                <hr class="my-2">
+                <h5 class="fw-medium fs-lg mb-1 mt-4">Fluent Languages:</h5>
+                <ul class="list-unstyled mb-3">
+                  <% for(let i = 0; i < vendor.languages.length; i++) { %>
+                  <li class="d-flex align-items-center mt-3">
+                    <i class="bx bx-book text-primary fs-xl me-2"></i>
+                    <%=vendor.languages[i]%>
+                  </li>
+                  <% } %>
+                </ul>
+              </div>
+              <% } %>
+
+            </div>
+          </div>
+        </aside>
+
+        <div class="col-md-8 pb-5 mb-lg-2 mb-lg-4">
+
+          <div class="d-flex flex-wrap align-items-center align-text-center">
+            <h3 class="h3 mb-4"><%=vendor.username%> Products:</h3>
+            <% if (authuser && vendor.username === authuser.username && authuser.authorization === 'vendor') { %>
+            <a href="/create-product?reviewPage=1" class="btn btn-primary shadow-primary ms-auto mb-3"><i
+                class='bx bx-plus-circle fs-lg me-2'></i> Create Product</a>
+            <% } %>
+          </div>
+
+          <% if (!paginatedProducts.results.length) { %>
+          <h6 class="mb-4">This Vendor doesnt have any Product</h6>
+          <% } else { %>
+          <%- include('../../Partials/render/products', { products: paginatedProducts.results , nextPage: paginatedProducts.nextPage, COLUMN_NB: 3}) %>
+          <% } %>
+
+          <hr class="my-2">
+          <h2 class="h3 mb-4 mt-5">Reviews :</h2>
+          <% if (!paginatedReviews.results.length) { %>
+          <h6 class="mb-4">This Vendor doesnt have any Review yet</h6>
+          <% } else { %>
+          <%- include('../../Partials/render/reviews', {REVIEWS: paginatedReviews.results , NEXTPAGE: paginatedReviews.nextPage, PADDING: 5}) %>
+          <% } %>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <%- include('../../Partials/Statics/Footer') %>
+</body>
+
+</html>

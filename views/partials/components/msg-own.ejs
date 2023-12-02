@@ -1,0 +1,44 @@
+<div>
+    <div class="message-entry message-entry--own">
+        <div class="position-relative py-2 px-3">
+          <div class="message-text" style="border-top-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; border-bottom-left-radius: 0.5rem;">
+      
+            <%- include('./messageContent', {MESSAGE}) %>
+
+            <% if (MESSAGE.viewedMessage && LASTMESSAGE) { %>
+                <p class="position-absolute fs-sm text-primary m-0" style="left: 0px; bottom: -25px">
+                    <%- include ("../../../public/assets/img/icons/check-double.svg") %>
+                    Read
+                </p>
+            <% } %>
+
+
+            <% if (SHOW_POPUP) { %>
+                <input id="delete-message-input-<%=MESSAGE_POSITION%>" type="checkbox" hidden></input> <!-- when checked css shows next element -->
+                <%- include('../Popup/Delete-popup', {
+                  CHECKBOX_ID:"delete-message-input-"+ MESSAGE_POSITION, 
+                  ACTION : '/messages/' + CONVERSATION_ID + '?action=delete&msgIndex=' + MESSAGE_POSITION,
+                  TYPE: "message", 
+                  }) %>
+                
+                <label title="Delete this message" for="delete-message-input-<%=MESSAGE_POSITION%>" class="delete-message-button btn">
+                  <i class="bx bx-trash-alt"></i>
+                </label>
+
+                <input id="edit-message-input-<%=MESSAGE_POSITION%>" type="checkbox" hidden></input> <!-- when checked css shows next element -->
+                <%- include('../Popup/EditMessage-popup', {
+                MESSAGE_POSITION,
+                CONVERSATION_ID,
+                MESSAGE,
+                }) %>
+              
+                <label title="Edit this message" for="edit-message-input-<%=MESSAGE_POSITION%>" class="delete-message-button b-edit btn me-4">
+                  <i class='bx bx-edit' style="color:black;"></i>
+              </label>
+            <% } %>
+
+
+        </div>
+    </div>
+ </div>
+</div>

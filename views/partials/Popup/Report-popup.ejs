@@ -1,0 +1,38 @@
+<!--designed to work with css input popup technique - no js -->
+<div class="popup-dialog" style="max-width:none;">
+  <div class="rounded px-4 py-4 my-4">
+    <form class="row justify-content-center" action="<%=action%>?type=<%=type%>&url=<%=url[0]%>?<%=url[1]%>" method="<%=method%>">
+      <div class="col-12">
+        <h2 class="h2 pb-lg-1 mb-4">Report this <%=type%></h2>
+        <p class="fs-lg text-muted pb-lg-1 mb-4">Why do you want to report this <%=type%>?</p>
+        <div class="row">
+          <label for="reason" class="form-label fs-base">Reason</label>
+          <div class="col-sm-6 mb-4">
+            <select name="reason" id="reason" class="form-select form-control-lg" required>
+              <option value="scam">Scam</option>
+              <option value="blackmail">Blackmail</option>
+              <option value="information">Private Infotmation Gathering</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <% if (authuser) { %>
+          <div class="col-sm-6 mb-4 d-flex align-items-center">
+            <input class="form-check-input m-0" type="checkbox" name="username" id="username">
+            <label class="form-check-label ms-2" for="username">Include My Username</label>
+          </div>
+          <% } %>
+          <div class="col-12 mb-4">
+            <label for="message" class="form-label fs-base">Message</label>
+            <textarea id="message" name="message" class="form-control form-control-lg" placeholder="Type your Report..." rows="4" minlength="10"
+              maxlength="3000" required></textarea>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end button-group">
+          <button type="submit" class="btn btn-success btn-lg shadow-success me-2">Report</button>
+          <label for="<%=checkboxInputId%>" class="btn btn-danger btn-lg shadow-danger">Cancel</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <label for="<%=checkboxInputId%>" class="popup-close"></label>
+</div>

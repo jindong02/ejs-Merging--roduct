@@ -1,0 +1,49 @@
+<% let index %>
+<% const arrayQuery = url[1] ? url[1].split('&') : []%>
+
+<% for(let i = 0; i < arrayQuery.length; i++) { %>
+  <% const brokeQuery = arrayQuery[i].split('=') %>
+  <% if (brokeQuery[0] === queryName) { %>
+    <% index = i; break %>
+  <% } %>
+<% } %>
+
+<nav class="pb-5" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <% if (nextPage.find(element => element === currentPage - 1)) { %>
+            <li class="page-item">
+                <a href="<%=url[0]%>?<%- include('./replaceQuery', {arrayQuery, index, newQuery:`${queryName}=${currentPage - 1}`}) %>" class="page-link">
+                  <i class="bx bx-chevron-left ms-n1 me-1"></i>
+                  Prev
+                </a>
+              </li>
+        <% } %>
+    <!-- Is this Useful ? -->
+      <!-- <li class="page-item disabled d-sm-none">
+        <span class="page-link text-body">1 / 4</span>
+      </li> -->
+     <% for(let i = 0; i < nextPage.length; i++) { %>
+        <% if (nextPage[i] === currentPage) { %>
+            <li class="page-item active d-none d-sm-block" aria-current="page">
+                <span class="page-link">
+                  <%=nextPage[i]%>
+                  <span class="visually-hidden">(current)</span>
+                </span>
+              </li>
+        <% } else { %>
+            <li class="page-item d-none d-sm-block">
+                <a href="<%=url[0]%>?<%- include('./replaceQuery', {arrayQuery, index, newQuery:`${queryName}=${nextPage[i]}`}) %>" class="page-link"><%=nextPage[i]%></a>
+              </li> 
+        <% } %>
+     <% } %>
+
+      <% if (nextPage.find(element => element === currentPage + 1)) { %>
+        <li class="page-item">
+            <a href="<%=url[0]%>?<%- include('./replaceQuery', {arrayQuery, index, newQuery:`${queryName}=${currentPage + 1}`}) %>" class="page-link">
+              Next
+              <i class="bx bx-chevron-right me-n1 ms-1"></i>
+            </a>
+          </li>
+    <% } %>
+    </ul>
+  </nav>

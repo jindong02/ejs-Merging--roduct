@@ -1,0 +1,284 @@
+<%- include('../../Partials/Statics/Head', {page: '- Docs'}) %>
+
+<body class="documentation-view">
+    <%- include('../../Partials/Statics/Navbar') %>
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <input id="mobile-menu-toggle" type="checkbox" hidden />
+    <label for="mobile-menu-toggle"
+        class="docs-aside-open-close"><%- include ("../../../public/assets/img/icons/move-left.svg") %></label>
+    <main class="page-wrapper">
+        <label class="clickout-mobile-menu" for="mobile-menu-toggle"></label>
+        <div>
+            <!-- Main sidebar navigation -->
+            <aside id="componentsNav" class="offcanvas-expand-lg position-fixed top-0 start-0 border-end-lg">
+                <div class="aside-scroller offcanvas-body swiper w-100 p-4">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide h-auto">
+                            <h3 class="fs-lg text-primary">Group 1</h3>
+                            <div class="list-group list-group-flush border-bottom pb-3 mb-4 mx-n4">
+                                <a href="#id-1" class="docs-link-item border-0 py-2 px-4 active">Example 1</a>
+                                <a href="#id-2" class="docs-link-item border-0 py-2 px-4">Example 2</a>
+                                <a href="#id-3" class="docs-link-item border-0 py-2 px-4">Example 3</a>
+                                <a href="#id-4" class="docs-link-item border-0 py-2 px-4">Example 4</a>
+                            </div>
+                            <h3 class="fs-lg text-primary">Group 2</h3>
+                            <div class="list-group list-group-flush border-bottom pb-3 mb-4 mx-n4">
+                                <a href="#id-5" class="docs-link-item border-0 py-2 px-4">Example 5</a>
+                                <a href="#id-6" class="docs-link-item border-0 py-2 px-4">Example 6</a>
+                                <a href="#id-7" class="docs-link-item border-0 py-2 px-4">Example 7</a>
+                                <a href="#id-8" class="docs-link-item border-0 py-2 px-4">Example 8</a>
+                            </div>
+                            <h3 class="fs-lg text-primary">Group 3</h3>
+                            <div class="list-group list-group-flush mx-n4 pb-2">
+                                <a href="#id-9" class="docs-link-item border-0 py-2 px-4">Example 9</a>
+                                <a href="#id-10" class="docs-link-item border-0 py-2 px-4">Example 10</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-scrollbar end-0"></div>
+                </div>
+            </aside>
+
+            <!-- Page container -->
+            <div class="docs-con pt-5">
+                <div class="container-fluid container pt-4 pt-lg-5 pb-2 pb-lg-4">
+                    <!-- Page title -->
+                    <div
+                        class="d-sm-flex align-items-end justify-content-between ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 pt-4 mb-n3">
+                        <div class="me-4">
+                            <h1 class="pb-1">Documentation</h1>
+                            <p class="text-muted fs-lg mb-2">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <section id="id-1" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 1</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-2" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 2</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-3" class=" docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 3</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-4" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 4</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-5" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 5</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-6" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 6</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-7" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 7</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-8" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 8</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-9" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 9</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="id-10" class="docs-section border-bottom ps-lg-2 ps-xxl-0">
+                        <h2 class="h4">Example 10</h2>
+                        <div class="pt-1">
+                            <p>
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit anim id est laborum."
+                            </p>
+                            <hr class="my-3" />
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+                                sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+                                voluptatem sequi nesciunt.
+                            </p>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include('../../Partials/Statics/Footer') %>
+</body>

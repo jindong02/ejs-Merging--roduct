@@ -1,0 +1,31 @@
+<form method="POST" action="/messages/<%=selectedConversation.id%>">
+
+        <% if (selectedConversation.messages.length < 1000) { %>
+            <div class="card-footer d-flex w-100 border-0 pt-3 pb-3 px-3">
+                <textarea class="form-control py-2" placeholder="Message..." minlength="2" maxlength="1000" style="height: 50px;"
+                name="content" rows="1" required></textarea>
+        
+                <button type="submit" class="desktop btn btn-primary btn-icon ms-2 d-none d-sm-block" style="height: 50px;">
+                    <i class="bx bx-send"></i>
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg ms-2 d-sm-none" style="height: 50px;">
+                    <i class="bx bx-send fs-xl"></i>
+                </button>
+            </div>
+        <% } else { %>
+            <div title="Message Limit Reached, you cannot have more than 1000 messages in a single conversation">
+                <div class="card-footer d-flex w-100 border-0 pt-3 pb-3 px-3 opacity-70" style="pointer-events: none;">
+                    <textarea class="form-control py-2" placeholder="Message..." minlength="2" maxlength="1000" style="height: 50px;"
+                    name="content" rows="1" required></textarea>
+            
+                    <button type="submit" class="desktop btn btn-primary btn-icon ms-2 d-none d-sm-block" style="height: 50px;">
+                        <i class="bx bx-send"></i>
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-lg ms-2 d-sm-none" style="height: 50px;">
+                        <i class="bx bx-send fs-xl"></i>
+                    </button>
+                </div>
+            </div>
+        <% } %>
+
+</form>

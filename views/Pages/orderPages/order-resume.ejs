@@ -1,0 +1,445 @@
+<%- include('../../Partials/Statics/Head', {page: '- Order Details ' + product.title}) %>
+
+<body>
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <main class="page-wrapper">
+
+    <%- include('../../Partials/Statics/Navbar') %>
+
+    <!-- Hero -->
+    <section class="pt-2 pt-lg-3 pb-lg-4">
+      <div class="container">
+
+        <nav class="py-4 mb-5" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="/orders?ordersPage=1">Your Orders</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Order Resume</li>
+          </ol>
+        </nav>
+
+
+        <h1>Order Resume</h1>
+
+
+      </div>
+    </section>
+
+    <section class="container order-resume-container">
+      <div class="row">
+
+        <aside class="col-lg-4 col-md-5 order-md-2 mb-5">
+          <div style="margin-top: -96px;"></div>
+          <div class="position-sticky top-0 pt-5">
+            <div class="pt-5">
+              <div class="card p-3 text-center card-deep-shadow">
+                <%- include('../../Partials/orderUpdate', { ORDER: order }) %>
+
+                <div class="text-start">
+                  <p class="h6 mb-0">Send XMR PRICE to this address</p>
+                  <p class="text-primary"><%=order.orderMoneroAddress%></p>
+
+                  <div class="d-flex">
+                    <div>
+                      <p class="mb-0"><b>Needed Amount :</b></p>
+                      <p class="mb-0">XMR PRICE</p>
+                    </div>
+                    <div class="ms-auto">
+                      <p class="mb-0"><b>Amount Paid : </b></p>
+                      <p class="mb-0">XMR PRICE</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="mt-2 mb-0"><b>Balance : </b></p>
+                    <p class="mb-0">XMR PRICE</p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </aside>
+
+        <!-- Content -->
+        <div class="col-xl-8 col-lg-8 col-md-7 order-md-1 mb-5">
+
+          <%- include('../../Partials/render/productCard', {PRODUCT: product}) %>
+
+          <hr class="my-4">
+
+
+          <%if (order.orderStatus === 'FINALIZED' || order.orderStatus === 'RECEIVED') {%>
+          <div class="card card-deep-shadow px-4 py-4">
+            <%if (!order.settings.leftReview && authuser.username !== order.vendor) {%>
+            <div class="hide-send-message-input">
+
+              <p class="h5">Leave a Review</p>
+
+              <form method="POST" action="/create-review/<%=order.id%>">
+                <!-- Privacy Settins -->
+                <p class="mt-3 mb-1">Privacy Settings</p>
+                <div class="d-flex">
+                  <input class='form-check-input' type="radio" name="type" id="default" value="default" required>
+                  <label class='form-check-label ms-1' for="default">Default <span class="opacity-70">(Not
+                      Recommended)</span></label><br>
+
+                  <input class='form-check-input ms-3' type="radio" name="type" id="semi-hidden" value="semi-hidden"
+                    required checked>
+                  <label class='form-check-label ms-1' for="semi-hidden">Semi-Hidden</label><br>
+
+                  <input class='form-check-input ms-3' type="radio" name="type" id="Hidden" value="hidden" required>
+                  <label class='form-check-label ms-1' for="Hidden">Hidden</label><br>
+                </div>
+
+                <p class="mt-3 mb-1">How would you rate this product ?</p>
+                <div class="d-flex">
+                  <input class='form-check-input' type="radio" name="note" id="1" value="1" required>
+                  <label class='form-check-label ms-1' for="1">1 Stars</label><br>
+
+                  <input class='form-check-input ms-3' type="radio" name="note" id="2" value="2" required>
+                  <label class='form-check-label ms-1' for="2">2 Stars</label><br>
+
+                  <input class='form-check-input ms-3' type="radio" name="note" id="3" value="3" required checked>
+                  <label class='form-check-label ms-1' for="3">3 Stars</label><br>
+
+                  <input class='form-check-input ms-3' type="radio" name="note" id="4" value="4" required>
+                  <label class='form-check-label ms-1' for="4">4 Stars</label><br>
+
+                  <input class='form-check-input ms-3' type="radio" name="note" id="5" value="5" required>
+                  <label class='form-check-label ms-1' for="5">5 Stars</label><br>
+                </div>
+
+                <textarea id="textarea-input" class="form-control mt-4" rows="4" name="review"
+                  placeholder="Type your Reviews..." minlength="5" maxlength="500" required></textarea>
+
+                <button class="btn btn-primary shadow-primary mt-3 ms-auto" type="submit">Post Review</button>
+              </form>
+
+            </div>
+
+            <%} else { %>
+            <p class="mb-0"><b>You have already left a review on this order</b></p>
+            <%}%>
+            </div>
+            <hr class="my-4">
+          <%} %>
+
+          
+          <div class="card card-deep-shadow px-4 py-4">
+
+            <input class="form-check-input" type="checkbox" id="buyer-info-checkbox" hidden>
+
+              <label for="buyer-info-checkbox"
+              class="h5 mb-0 d-flex align-items-center justify-content-between">
+              <span>
+                <p class="h5 mb-0">Buyer Information: </p>
+              </span>
+              <%- include("../../../public/assets/img/icons/caret-down.svg")%>
+            </label>
+
+            <div class="buyer-info-container">
+              <div class="mt-4">
+                <% if (order.buyerInformation) { %>
+                  <textarea rows="1" name="pgp" placeholder="Pgp Keys" class="form-control form-control-lg overflow-container"><%=order.buyerInformation%></textarea>
+                <% } else { %>
+                  <textarea rows="1" name="pgp" placeholder="Pgp Keys" class="form-control form-control-lg overflow-container">Waiting for the Buyer to send his Informations...</textarea>
+                <% } %>
+              </div>
+
+            </div>
+          </div>
+          <hr class="my-4">
+          
+
+          <div class="card card-deep-shadow px-3 px-md-4 py-4 border-0 my-4">
+            <h5 class="mb-4 mt-2">Order Information :</h5>
+
+            <div class="d-flex justify-content-between product-description-content">
+              <p class="" style="width: 40%;"><b>Base Price:</b></p>
+              <p class="" style="width: calc(60% - 10px);"><%=order.orderDetails.basePrice%>$</p>
+            </div>
+
+            <div class="d-flex justify-content-between product-description-content">
+              <p class="" style="width: 40%;"><b>Quantity Taken:</b></p>
+              <p class="" style="width: calc(60% - 10px);"><%=order.orderDetails.quantity%></p>
+            </div>
+
+              <% if (order.orderDetails.chosenShippingOption) { %>
+                <div class="d-flex justify-content-between product-description-content">
+                  <p class="" style="width: 40%;"><b>Shipping Option:</b></p>
+                  <p class="" style="width: calc(60% - 10px);"><%= order.orderDetails.chosenShippingOption.optionName%>
+                    <span class="ms-1">
+                      <% if (order.orderDetails.chosenShippingOption.optionPrice > 0) { %>
+                        +
+                      <% } else if (order.orderDetails.chosenShippingOption.optionPrice < 0){ %>
+                        -
+                      <% } %>
+                      <%=order.orderDetails.chosenShippingOption.optionPrice %>$
+                    </span>
+                  </p>
+                </div>
+              <%}%>
+        
+                <% if (order.orderDetails.chosenSelection1) { %>
+                  <div class="d-flex justify-content-between product-description-content">
+                    <p class="" style="width: 40%;"><b>Selection #1:</b></p>
+                    <p class="" style="width: calc(60% - 10px);"><b><%= order.orderDetails.chosenSelection1.selectionName %>:</b> 
+                      <span class="ms-2">
+                      <%= order.orderDetails.chosenSelection1.selectedChoice.choiceName %> 
+                      <span class="ms-2">
+                      <% if (order.orderDetails.chosenSelection1.selectedChoice.choicePrice > 0) { %>
+                        +
+                      <% } else if (order.orderDetails.chosenSelection1.selectedChoice.choicePrice < 0){ %>
+                        -
+                      <% } %>
+                    </span>
+                      <%= order.orderDetails.chosenSelection1.selectedChoice.choicePrice %>$</p>
+                      </span>
+                  </div>
+              <%}%>
+
+              <% if (order.orderDetails.chosenSelection2) { %>
+                <div class="d-flex justify-content-between product-description-content">
+                  <p class="" style="width: 40%;"><b>Selection #2:</b></p>
+                  <p class="" style="width: calc(60% - 10px);"><b><%= order.orderDetails.chosenSelection2.selectionName %>:</b>  
+                    <span class="ms-2">
+                    <%= order.orderDetails.chosenSelection2.selectedChoice.choiceName %> 
+                    <span class="ms-2">
+                    <% if (order.orderDetails.chosenSelection2.selectedChoice.choicePrice > 0) { %>
+                      +
+                    <% } else if (order.orderDetails.chosenSelection2.selectedChoice.choicePrice < 0){ %>
+                      -
+                    <% } %>
+                  </span>
+                    <%= order.orderDetails.chosenSelection2.selectedChoice.choicePrice %>$</p>
+                  </span>
+                </div>
+            <%}%>
+
+            <div class="d-flex justify-content-between product-description-content">
+              <p class="" style="width: 40%;"><b>Additionnal Transaction Fee:</b></p>
+              <p class="opacity-70" style="width: calc(60% - 10px);">(Here Put the 2 added transaction fee for the escrow etc..)</p>
+            </div>
+
+            <div class="d-flex justify-content-between product-description-content">
+              <p class="" style="width: 40%;"><b>Total Price:</b></p>
+              <p class="" style="width: calc(60% - 10px);"><%= order.orderDetails.totalPrice %>$</p>
+            </div>
+
+            </div>
+
+            <hr class="my-4">
+
+
+            <!-- CHAT -->
+              <p class="h5 ">Order Chat</p>
+              <div class="w-100 mt-2" style="max-height: 712px; height: 400px;">
+                <div class="card card-deep-shadow h-100">
+  
+                  <!-- Messages -->
+                  <div class="card-body swiper scrollbar-hover w-100 p-3 pb-0" style="overflow-y: auto;">
+                    <div class="swiper-slide h-auto">
+  
+                      <% for(let i = 0; i < order.orderChat.length ; i++) {%>
+  
+                      <% if (order.orderChat[i].sender === 'admin') { %>
+                      <div class="d-flex align-items-center justify-content-center mb-1">
+                        <!--Put message in middle-->
+                        <div class="ps-2 ms-1" style="max-width: 348px;">
+                          <div class="bg-warning card p-3 mb-1"
+                            style="border-top-right-radius: .5rem; border-bottom-right-radius: .5rem; border-bottom-left-radius: .5rem;">
+                            <%= order.orderChat[i].message %></div>
+                        </div>
+                      </div>
+                      <% } else if (order.orderChat[i].sender === 'vendor') { %>
+                           <% if (authuser.username === order.vendor) { %>
+                            <div class="d-flex align-items-end justify-content-end mb-1">
+                              <div class="pe-2 me-1" style="max-width: 348px;">
+                              <div class="bg-primary text-light p-3 mb-1"
+                              style="border-top-left-radius: .5rem; border-bottom-right-radius: .5rem; border-bottom-left-radius: .5rem;">
+                              <%= order.orderChat[i].message %>
+                            </div>
+                          </div>
+                        </div>
+                            <% } else { %> 
+                              <div class="d-flex align-items-start justify-content-start mb-1">
+                                <div class="pe-2 me-1" style="max-width: 348px;">
+                              <div class="card p-3 mb-1"
+                              style="background-color: #18171785;border-bottom-right-radius: .5rem; border-bottom-left-radius: .5rem;">
+                              <%= order.orderChat[i].message %>
+                            </div>
+                          </div>
+                        </div>
+                            <% } %>
+
+                      <% } else { %>
+                           <% if (authuser.username !== order.vendor) { %>
+                            <div class="d-flex align-items-end justify-content-end mb-1">
+                              <div class="pe-2 me-1" style="max-width: 348px;">
+                              <div class="bg-primary text-light p-3 mb-1"
+                              style="border-top-left-radius: .5rem; border-bottom-right-radius: .5rem; border-bottom-left-radius: .5rem;">
+                              <%= order.orderChat[i].message %>
+                            </div>
+                          </div>
+                        </div>
+                            <% } else { %> 
+                              <div class="d-flex align-items-start justify-content-start mb-1">
+                                <div class="pe-2 me-1" style="max-width: 348px;">
+                              <div class="card p-3 mb-1"
+                              style="background-color: #18171785;border-bottom-right-radius: .5rem; border-bottom-left-radius: .5rem;">
+                              <%= order.orderChat[i].message %>
+                            </div>
+                          </div>
+                        </div>
+                            <% } %>
+                      <% } %>
+                      <% } %>
+                    </div>
+                  </div>
+
+
+                <!-- Footer (Send message form) -->
+                <form action="/send-order-chat/<%=order.id%>" method="POST">
+                  <div class="card-footer d-sm-flex w-100 border-1 p-2" style="background-color: #18171785;border: 1px solid #212121;">
+                    <div class="position-relative w-100 me-2 mb-3 mb-sm-0">
+                      <input type="text" minlength="2" maxlength="1000" class="form-control form-control-lg" style="padding-right: 85px;"
+                        placeholder="Type your Message" name="newChat">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-icon btn-lg d-none d-sm-inline-flex ms-1">
+                      <i class="bx bx-send"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+
+
+            <% if (!order.canDelete || order.orderStatus !== 'FINALIZED' && authuser.username !== order.vendor && authuser.username !== order.admin) {%>
+
+                <hr class="my-4">
+                <div class="card card-deep-shadow px-4 py-4">
+    
+                  <input class="form-check-input" type="checkbox" id="order-advanced-settings" hidden>
+      
+                    <label for="order-advanced-settings"
+                    class="h5 mb-0 d-flex align-items-center justify-content-between">
+                    <span>
+                      <p class="h6 mb-0">Advanced Settings: </p>
+                    </span>
+                    <%- include("../public/assets/img/icons/caret-down.svg")%>
+                  </label>
+
+                <div class="order-advanced-settings">
+
+                  <% if (authuser.username !== order.vendor && authuser.username !== order.admin && order.orderStatus !== 'FINALIZED') { %>
+                  <form action="/update-privacy-order/<%=order.id%>" method="POST">
+
+                      <div class="mt-3">
+                          <label class="form-label mb-2" for="buyerPrivateInfoDeletion">Delete my Private Information after :</label>
+                          <p class="fs-xs opacity-70 my-0 mb-2">Here you can decide how many time after the finalization of your order do you want us to delete your private information</p>
+                          <select name="buyerPrivateInfoDeletion" class="form-select mb-4" id="buyerPrivateInfoDeletion">
+                            <option value="NEVER"
+                              <% if (order.settings.buyerPrivateInfoDeletion === "NEVER") { %>
+                                 selected
+                              <% } %>
+                              >Never</option> 
+                              <option value="INSTANTLY"
+                              <% if (order.settings.buyerPrivateInfoDeletion === "INSTANTLY") { %>
+                                  selected
+                              <% } %>
+                              >Instantly</option> 
+                              <option value="DAY"
+                              <% if (order.settings.buyerPrivateInfoDeletion === "DAY") { %>
+                                  selected
+                              <% } %>
+                              >1 days</option> 
+                              <option value="THREE_DAYS"
+                              <% if (order.settings.buyerPrivateInfoDeletion === "THREE_DAYS") { %>
+                                  selected
+                              <% } %>
+                              >3 days</option> 
+                              <option value="WEEK"
+                              <% if (order.settings.buyerPrivateInfoDeletion === "WEEK") { %>
+                                  selected
+                              <% } %>
+                              >1 weeks</option> 
+                              <option value="MONTH"
+                              <% if (order.settings.buyerPrivateInfoDeletion === "MONTH") { %>
+                                  selected
+                              <% } %>
+                              >≈ 1 months (30days)</option> 
+                          </select>
+                      </div>
+                      <hr class="my-3">
+                    
+                    <div class="mt-4">
+                      <label class="form-label mb-2" for="buyerPrivateInfoDeletion">Order Privacy Type:</label>
+                      <p class="fs-xs opacity-70 my-0 mb-2">You have chosen this settings when you have created this order</p>
+                      <p class="fs-xs opacity-70 my-0 mb-2 text-danger">Changing This Setting to "Default" will reveal your real username to the Vendor</p>
+                      <select name="privacyType" class="form-select mb-4" id="buyerPrivateInfoDeletion">
+                          <option value="default"
+                          <% if (order.settings.privacyType === 'default') { %>
+                              selected
+                          <% } %>
+                          > Default</option> 
+                          <option value="semi-hidden"
+                          <% if (order.settings.privacyType === 'semi-hidden') { %>
+                              selected
+                          <% } %>
+                          > Partialy Hide your Username</option>
+                          <option value="hidden"
+                          <% if (order.settings.privacyType === 'hidden') { %>
+                              selected
+                          <% } %>
+                          > Entirely Hide your Username</option>
+                      </select>
+
+                  </div>
+                  <div class="d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary shadow-primary ms-auto">Edit Settings</button>
+                  </div>
+                  </form>
+                  <% } %>
+
+                  <% if (!order.canDelete && authuser.username !== order.vendor && authuser.username !== order.admin && order.orderStatus !== 'FINALIZED') { %>
+                    <hr class="my-3">
+                  <% }  %>
+
+
+                  <% if (!order.canDelete) { %>
+
+                    <div class="mt-3">
+                      <p class="fs-xs mb-1 text-danger">Force The Deletion of this Offer, you will delete every trace of this Order right now</p>
+                      <p class="fs-xs mb-1 text-danger">This Option is Irreversible and could cause some big problem</p>
+                      <p class="fs-xs text-danger">You should Use this option ONLY if you have made a BIG error (revealing your identity, etc...)</p>
+                      <form action="/update-order/<%=order.id%>" method="POST">
+                        <div class="d-flex">
+                          <span class="form-check d-flex align-items-center">
+                            <input class="form-check-input mt-0" type="checkbox" id="confirm" required>
+                            <label class="form-check-label ms-2" for="confirm">I confirm that I am sure of my choice and that I am aware of the consequence</label>
+                          </span>
+                        <button type="submit" class="btn btn-danger shadow-danger ms-auto" name="status" value="forceDelete">Force Delete Order</button>
+                        </div>
+                      </form>
+                    </div>
+                  <% } %>
+
+                </div>
+              </div>
+              <% } %>
+
+
+
+          </div>
+    </section>
+
+    <%- include('../../Partials/Statics/Footer') %>
+  </main>
+
+</body>
+
+</html>

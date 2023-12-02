@@ -1,0 +1,512 @@
+<%- include('../../Partials/Statics/Head', {page: '- Create Product'}) %>
+
+
+<body>
+
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <main class="page-wrapper">
+
+    <%- include('../../Partials/Statics/Navbar') %>
+
+    <!-- Hero -->
+    <section class="pt-2 pt-lg-3 pb-lg-4">
+      <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav class="py-4" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/products?productPage=1">Product</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Your Product Title</li>
+          </ol>
+        </nav>
+
+
+        <div class="pt-3 pb-4 py-sm-4 pt-lg-4">
+          <%- include('../../Partials/components/flashMessages') %>
+        </div>
+
+
+        <!-- Badges -->
+        <div class="d-flex pt-3 pb-4 py-sm-4 pt-lg-4">
+          <span class="badge bg-success fs-sm me-2">Badges</span>
+          <a href="#" class="badge bg-white fs-sm text-dark text-decoration-none">Category</a>
+        </div>
+
+
+        <form <% if (product.title) { %> action="/create-product?slug=<%=product.slug%>" <% } else { %>
+          action="/create-product" <% } %> enctype="multipart/form-data" method="POST">
+
+          <!-- Title -->
+          <div class="card card-deep-shadow pt-3 pb-4 px-4 mt-3 border-0">
+            <label class="form-label" for="title-input">Product Title</label>
+            <input name="title" class="form-control" type="text" id="title-input" placeholder="Product Title"
+              value="<%=product.title%>" minlength="5" maxlength="250" required>
+
+            <div class="d-sm-flex mt-3">
+              <div class="d-flex border-sm-end pe-sm-3 me-sm-3 mb-2 mb-sm-0">
+                <div class="text-nowrap me-1">
+
+                  <i class="bx bx-star text-muted opacity-75"></i>
+                  <i class="bx bx-star text-muted opacity-75"></i>
+                  <i class="bx bx-star text-muted opacity-75"></i>
+                  <i class="bx bx-star text-muted opacity-75"></i>
+                  <i class="bx bx-star text-muted opacity-75"></i>
+
+                  <span class="opacity-70">Rating/5</span>
+
+                </div>
+              </div>
+              </div>
+              </div>
+    </section>
+
+    <!-- Sidebar (Course summary) -->
+    <!-- MAke it look better when no Details -->
+    <section class="container create-product-container">
+      <div class="row">
+        <aside class="col-lg-4 col-md-5 offset-xl-1 order-md-2 mt-3">
+          <div class="position-sticky" style="top: calc(5rem + 20px) !important;">
+            <div class="">
+              <div class="card card-deep-shadow p-3">
+                <div class="card-body pb-0 px-0">
+                  <h5 class="mb-4">About this Product:</h5>
+
+                  <ul class="list-unstyled">
+
+                    <% for(let i = 0; i < 5; i++) { %>
+                    <li class="d-flex align-items-center mb-2">
+                      <input name="aboutProduct" class="form-control" type="text" id="text-input" maxlength="175"
+                        placeholder="About Product #<%=i + 1%>" <% if(product.aboutProduct[i]) { %>
+                        value="<%=product.aboutProduct[i]%>" <% } %>>
+                    </li>
+                    <% } %>
+
+                  </ul>
+
+                  <div class="h2 d-flex align-items-center my-4">
+                    <!-- Price -->
+                    <input class="form-control" type="number" step=".01" id="number-input" name="price"
+                      placeholder="Price of Product" max="1000000" min="1" value="<%=product.price%>" decimal="2"
+                      required <% if (product.salesPrice) { %> style="pointer-events:none; opacity: 50%;" <% } %>>
+                    <label for="number-input" class="form-label ms-4">$</label>
+                  </div>
+
+                </div>
+                <!-- Make Button Take whole wicth of sidebar and be thicker -->
+                <a class="btn btn-primary rounded-pill shadow-primary">Buy This Product</a>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="col-xl-7 col-lg-8 col-md-7 order-md-1 mb-5">
+
+          <div class="card card-deep-shadow py-4 px-4 mt-3 border-0">
+            <!-- Make File Input look better -->
+            <div class="">
+              <label for="file-input" class="form-label">Main Product Image</label>
+              <% if (product.img_path[0]){ %>
+              <p class="opacity-70 fs-sm mb-1">To keep the current main Image, leave this field empty</p>
+              <% } %>
+              <input class="form-control" type="file" id="file-input" name="productImage" accept="image/*"
+                <% if (!product.img_path.length){ %> required <% } %>>
+            </div>
+          </div>
+
+          <div class="card card-deep-shadow py-4 px-4 mt-3 border-0">
+            <!-- Make File Input look better -->
+            <div class="">
+              <label for="file-input" class="form-label">Additionnal Product Image</label>
+              <p class="opacity-70 fs-sm mb-1">Here you can add a maximun off 2 other Image to your Product</p>
+              <% if (product.img_path[1]) { %>
+              <p class="opacity-70 text-danger fs-sm mb-1">Adding new Files here will overwrite the previous Additionnal
+                Product Image</p>
+              <% } %>
+              <input class="form-control" type="file" id="file-input" name="additionnalProductImage" accept="image/*"
+                multiple>
+            </div>
+          </div>
+
+          <% if (product.img_path.length > 1) { %>
+          <div class="card card-deep-shadow py-4 px-4 mt-3 border-0">
+            <div class="d-flex product-secondary-images">
+              <% for(let i = 1; i < product.img_path.length; i++) { %>
+              <input id="delete-img-<%=i%>" class="form-check-input ms-5" type="checkbox" name="deleteAdditionnalImg"
+                value="<%=i%>" hidden />
+              <label for="delete-img-<%=i%>" class="delete-image-wrap">
+                <img src="<%=product.img_path[i]%>" class="card-img-top" alt="Product Image">
+                <div class="delete">
+                  <i class='bx bx-trash'></i>
+                </div>
+              </label>
+              <% } %>
+            </div>
+          </div>
+          <% } %>
+
+
+          <!-- Author -->
+          <div class="card card-deep-shadow py-3 px-5 mt-3 border-0 ">
+            <div class="d-sm-flex align-items-center">
+              <a href="/user/profile/<%=authuser.username%>?productPage=1&reviewPage=1">
+                <img src="<%=authuser.img_path%>" class="medium-rc rounded-circle" width="60"
+                  alt="<%=authuser.username%>">
+              </a>
+              <div class="ps-3 pe-sm-3 me-sm-5">
+                <div class="opacity-80 mb-1">Vendor :</div>
+                <a href="/user/profile/<%=authuser.username%>?productPage=1&reviewPage=1"><%=authuser.username%></a>
+              </div>
+              <div class="ps-3 pe-sm-3 me-sm-5">
+                <div class="opacity-80 mb-1">Vendor Rating :</div>
+                <div class="d-flex border-sm-end ">
+                  <div class="text-nowrap me-1">
+                    <%- include('../../Partials/components/rating', {rating: authuser.review.average_note}) %>
+                  </div>
+                  <span class="opacity-70">
+                    <span class="opacity-70">(Number reviews)</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-deep-shadow py-4 px-4 mt-3 border-0">
+
+            <input id="product-detail-checkbox" type="checkbox" hidden 
+            <% if (product.productDetails.length) { %>
+              checked
+            <% } %>
+            />
+            <label for="product-detail-checkbox"
+              class="h5 mb-0 d-flex align-items-center justify-content-between"><span>
+                Product Details
+              </span>
+              <%- include("../../../public/assets/img/icons/caret-down.svg")%>
+            </label>
+
+            <div class="dropdown-content">
+              <% for(let i = 0; i < 5; i++) { %>
+              <label for="product-details-<%=i%>" class="form-label mt-3">Product Details #<%=i + 1%></label>
+              <input name="productDetails" class="form-control" type="text" id="product-details-<%=i%>" maxlength="250"
+                placeholder="Product Details #<%=i + 1%>" <% if (product.productDetails[i]) { %>
+                value="<%=product.productDetails[i].details%>" <% } %>>
+
+              <label for="details-description-<%=i%>" class="form-label mt-3">Product Details Description
+                #<%=i + 1%></label>
+              <textarea class="form-control" name="productDetailsDescription"
+                placeholder="Describe the above product details" id="details-description-<%=i%>" rows="2"
+                maxlength="500"><% if (product.productDetails[i]) { %><%=product.productDetails[i].detailsDescription%><% } %></textarea>
+
+              <% if (i !== 4) { %>
+              <hr class="my-4 opacity-70" />
+              <% } %>
+              <% } %>
+            </div>
+          </div>
+
+
+
+          <div class="card card-deep-shadow pt-4 pb-2 px-4 mt-3 border-0">
+            <label for="description-textarea" class="form-label fs-lg">Product description</label>
+            <textarea class="form-control" name="description" placeholder="Describe your Product..."
+              id="description-textarea" rows="5" minlength="10" maxlength="20000"
+              required><%=product.description%></textarea>
+            <a href="/docs/style-text" class="ms-auto fs-sm mt-2">Learn how to style your text</a>
+          </div>
+
+
+          <div class="card card-deep-shadow py-3 px-4 mt-3 border-0">
+            <label for="shipfrom-input" class="form-label mb-1">Ship From </label>
+            <select name='shipFrom' class="form-select" id="shipfrom-input" required>
+              <option value="United-State">United-State</option>
+              <option value="Canada">Canada</option>
+            </select>
+          </div>
+
+          <div class="card card-deep-shadow pt-4 pb-3 px-4 mt-3 border-0">
+            <label for="message-textarea" class="form-label mb-0">Message</label>
+            <p class="fs-xs opacity-70 mb-1">This message will be displayed when the buyer will provide his information
+            </p>
+            <textarea name="message" class="form-control" type="text" id="message-textarea"
+              placeholder="Write your Message..." value="<%=product.message%>"
+              maxlength="500"><%=product.message%></textarea>
+            <a href="/docs/style-text" class="ms-auto fs-sm mt-2">Learn how to style your text</a>
+          </div>
+
+          <!-- Shipping Option -->
+          <div class="card card-deep-shadow py-4 px-4 mt-3 border-0">
+            <input id="shipping-option-checkbox" type="checkbox" hidden 
+            <% if (product.shipping_option.length) { %>
+              checked
+            <% } %>
+            />
+            <label for="shipping-option-checkbox"
+              class="h5 mb-0 d-flex align-items-center justify-content-between"><span>
+                Shipping Options
+              </span>
+              <%- include("../../../public/assets/img/icons/caret-down.svg")%>
+            </label>
+            <div class="dropdown-content">
+              <% for(let i = 0; i < 5; i++) { %>
+              <div class="d-flex mt-3">
+                <input name="describe_ship" class="form-control" id="inline-form-input" type="text" maxlength="200"
+                  placeholder="Describe Shipping Option #<%=i + 1%>" <% if(product.shipping_option[i]) { %>
+                  value="<%=product.shipping_option[i].option_description%>%>" <% } %>>
+                <input name="price_ship" class="form-control ms-3" id="inline-form-input" type="number" max="1000"
+                  min="0" placeholder="Additionnal Price #<%=i + 1%>" <% if(product.shipping_option[i]) { %>
+                  value="<%=product.shipping_option[i].option_price%>%>" <% } %>>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="card card-deep-shadow py-4 px-4 mt-3 border-0">
+            <h5 class="mb-0">Product Selection(s)</h5>
+            <div>
+              <p class="fs-xs opacity-70 mb-1">Here you can add a Selection to your Product and attribute a price to
+                each
+                choice</p>
+              <p class="fs-xs opacity-70 mb-4">Ex: I sell T-shirt here a can add a selection of color that my buyer can
+                choose from, I could also add additionnal cost in function of what color they take</p>
+
+              <!-- Selection #1 -->
+              <div>
+                <input id="product-selection-1-checkbox" type="checkbox" hidden 
+                <% if (product.selection_1?.selection_name.length) { %>
+                  checked
+                <% } %>
+                />
+                <label for="product-selection-1-checkbox"
+                  class="h5 mb-0 d-flex align-items-center justify-content-between"><span>
+                    Selection #1
+                  </span>
+                  <%- include("../../../public/assets/img/icons/caret-down.svg")%>
+                </label>
+                <div class="dropdown-content">
+                  <div class="mb-2">
+                    <input name="selection_1_name" class="form-control" type="text" id="text-input" maxlength="100"
+                      placeholder="Name of the Selection #1. Ex: Color" <% if(product.selection_1) { %>
+                      value="<%=product.selection_1.selection_name%>" <% } %>>
+                  </div>
+
+
+                  <% for(let i = 0; i < 5; i++) { %>
+                  <div class="d-flex mt-3">
+                    <input name="se_1_des" class="form-control" type="text" maxlength="200"
+                      placeholder="Choice Name #<%=i + 1%>"
+                      <% if(product.selection_1 && product.selection_1.selection_choices[i]) { %>
+                      value="<%=product.selection_1.selection_choices[i].choice_name%>" <% } %>>
+                    <input name="se_1_price" class="form-control ms-3" type="number" max="1000" min="-1000"
+                      placeholder="Additionnal Price #<%=i + 1%>"
+                      <% if(product.selection_1 && product.selection_1.selection_choices[i]) { %>
+                      value="<%=product.selection_1.selection_choices[i].choice_price%>" <% } %>>
+                  </div>
+                  <% } %>
+                </div>
+              </div>
+
+              <hr class="my-4">
+
+              <!-- Selection #2 -->
+              <div>
+                <input id="product-selection-2-checkbox" type="checkbox" hidden 
+                <% if (product.selection_2?.selection_name.length) { %>
+                  checked
+                <% } %>
+                />
+                <label for="product-selection-2-checkbox"
+                  class="h5 mb-0 d-flex align-items-center justify-content-between"><span>
+                    Selection #2
+                  </span>
+                  <%- include("../../../public/assets/img/icons/caret-down.svg")%>
+                </label>
+                <div class="dropdown-content">
+                  <div class="mb-2">
+                    <input name="selection_2_name" class="form-control" type="text" id="text-input" maxlength="100"
+                      placeholder="Name of the Selection #2" <% if(product.selection_2) { %>
+                      value="<%=product.selection_2.selection_name%>" <% } %>>
+                  </div>
+
+
+                  <% for(let i = 0; i < 5; i++) { %>
+                  <div class="d-flex mt-3">
+                    <input name="se_2_des" class="form-control" type="text" maxlength="200"
+                      placeholder="Choice Name #<%=i + 1%>"
+                      <% if(product.selection_2 && product.selection_2.selection_choices[i]) { %>
+                      value="<%=product.selection_2.selection_choices[i].choice_name%>" <% } %>>
+                    <input name="se_2_price" class="form-control ms-3" type="number" max="1000" min="-1000"
+                      placeholder="Additionnal Price #<%=i + 1%>"
+                      <% if(product.selection_2 && product.selection_2.selection_choices[i]) { %>
+                      value="<%=product.selection_2.selection_choices[i].choice_price%>" <% } %>>
+                  </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Quantity Settings -->
+          <div class="card card-deep-shadow pt-4 pb-4 px-4 mt-3 border-0">
+            
+
+
+              <input class="form-check-input" type="checkbox" id="quantity-settings-checkbox"
+                <% if (product.qty_settings?.available_qty || product.qty_settings?.max_order) { %> checked <% } %>
+                hidden>
+
+                <label for="quantity-settings-checkbox"
+                class="h5 mb-0 d-flex align-items-center justify-content-between">
+                <span>
+                  Quantity Settings
+                </span>
+                <%- include("../../../public/assets/img/icons/caret-down.svg")%>
+              </label>
+              <br>
+              <div class="quantity-settings">
+                <label for="qty-input" class="form-label mb-1 mt-4">Available Quantity</label>
+                <input class="form-control" name="qtySettings" placeholder="How much do you have in Stock ?"
+                  max="1000" type="number" id="qty-input" <% if (product.qty_settings) { %>
+                  value='<%=product.qty_settings.available_qty%>' <% } %>>
+
+                <label for="maxqty-input" class="form-label mb-1 mt-4">Maximun Per Order</label>
+                <input class="form-control" name="max_order" placeholder="How much can a buyer take on a single order ?"
+                  max="1000" type="number" id="maxqty-input" <% if (product.qty_settings) { %>
+                  value='<%=product.qty_settings.max_order%>' <% } %>>
+              </div>
+
+          </div>
+
+
+          <div class="card card-deep-shadow pt-4 pb-4 px-4 mt-3 border-0">
+
+              <input class="form-check-input" type="checkbox" id="settings-checkbox" <% if (product.salesPrice) { %>
+                checked <% }%> hidden>
+
+                <label for="settings-checkbox"
+                class="h5 mb-0 d-flex align-items-center justify-content-between">
+                <span>
+                  Settings
+                </span>
+                <%- include("../../../public/assets/img/icons/caret-down.svg")%>
+              </label>
+
+              <div class="settings-container <%= product.title?(product.salesPrice?'full-height':'title-height'):'' %>">
+                <hr class="my-4">
+                
+                <% if (product.title) { %>
+                <div>
+                  <p class="h6 mt-4">Start a Sales !</p>
+
+                  <% if (product.salesPrice) { %>
+
+                    <label for="" class="form-label mb-1">Sales Price</label>
+                    <input type="number" class="form-control" placeholder="Price on sales of the product" step=".01"
+                      name="salesPrice" id="saleprice-input" value="<%=product.salesPrice%>" style="pointer-events:none; opacity: 50%;" max="<%=product.price - 1%>" >
+  
+                    <label for="" class="form-label mb-1 mt-4">Duration of the sales</label>
+                    <input type="number" class="form-control" placeholder="How many days will your Sales Last ?" max="30"
+                      name="salesDuration" id="saletime-input" value="<%=product.salesDuration%>" style="pointer-events:none; opacity: 50%;">
+
+                    <div class="mt-3">
+                      <input class="form-check-input" name="stopSales" type="checkbox" id="stopSales">
+                      <label type="submit" for="stopSales" class="form-check-label text-danger ms-2">I want to stop this
+                        Sales</label>
+                    </div>
+
+                  <% } else { %> 
+                    <label for="saleprice-input" class="form-label mb-1">Sales Price</label>
+                    <input type="number" class="form-control" placeholder="Price on sales of the product" step=".01"
+                      name="salesPrice" id="saleprice-input" max="<%=product.price - 1%>" >
+  
+                    <label for="saletime-input" class="form-label mb-1 mt-4">Duration of the sales</label>
+                    <input type="number" class="form-control" placeholder="How many days will your Sales Last ?" max="30"
+                      name="salesDuration" id="saletime-input">
+                  <% } %>
+                </div>
+                <hr class="my-4">
+                <% } %>
+
+
+
+                <label for="status-input" class="form-label">Status of your Product</label>
+                <select class="form-select me-4 mb-2 mb-md-0" id="status-input" name="status" style="min-width: 240px;"
+                  required>
+                  <option value="online" <% if (product.status === 'online') { %> selected <% } %>>Online</option>
+                  <option value="offline" <% if (product.status === 'offline') { %> selected <% } %>>Offline</option>
+                </select>
+
+                <hr class="my-4">
+
+                <div>
+                  <p class="h6 mb-2 mt-1">Privacy Settings :</p>
+                  <label class="form-check-label me-2" for="privacy-hidden">Allow the buyer to hide their username from
+                    me</label>
+                  <input name="allowHidden" class="form-check-input" type="checkbox" id="privacy-hidden"
+                    <% if (product.allow_hidden) { %> checked <% } %>>
+                </div>
+
+                <hr class="my-4">
+
+                <div>
+                  <p class="h6 my-1">Custom Monero Address :</p>
+                  <p class="fs-xs opacity-70 mb-1">Here you can decide if you want to use a custom Monero Address to
+                    recieve your payment</p>
+                  <p class="fs-xs opacity-70 mb-1">In resume, once the order is successfull, we will send you your money
+                    to this address and not the address associated with your user</p>
+                  <input name="customMoneroAddress" value="<%=product.customMoneroAddress%>" class="form-control"
+                    type="text" id="text-input" maxlength="106" placeholder="Custom address...">
+                </div>
+
+              </div>
+          </div>
+
+          <div class="d-flex flex-wrap my-2 product-control-wrap">
+            <button type="submit" class="btn btn-primary my-2">
+              <% if (product.title) { %>
+              Edit Product
+              <% } else { %>
+              Create Product
+              <% } %>
+            </button>
+            </form>
+
+            <% if (product.title) { %>
+            <div class="ms-auto my-2">
+              <form action="/delete-product/<%=product.slug%>?_method=DELETE" method="POST">
+                <div class="d-flex align-items-center flex-wrap">
+                  <span class="form-check">
+                    <input class="form-check-input" type="checkbox" id="confirm" required>
+                    <label class="form-check-label" for="confirm">I want to Delete This Product</label>
+                  </span>
+                  <button type="submit" class="btn btn-danger ms-3">Delete this Product</button>
+                </div>
+              </form>
+            </div>
+            <% } %>
+          </div>
+
+
+
+          <!-- Review Section -->
+          <h2 class="h3 mb-4 mt-4">Reviews :</h2>
+          <%- include('../../Partials/render/reviews', {REVIEWS: reviews, NEXTPAGE: [1], PADDING: 4}) %>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <!-- Footer -->
+  <%- include('../../Partials/Statics/Footer') %>
+</body>
+
+</html>

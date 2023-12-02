@@ -1,0 +1,148 @@
+<%- include('../../Partials/Statics/Head', {page: '- Edit Profile'}) %>
+
+  <body>
+
+    <%- include('../../Partials/Statics/Navbar') %>
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+      <section class="container pt-5" style="max-width: 1520px;">
+
+                <!-- Breadcrumb -->
+                <nav class="pb-4 pt-2" aria-label="breadcrumb">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                      <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="/user/profile/<%=vendor.username%>?productPage=1&reviewPage=1">Profile</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page"><%=vendor.username%></li>
+                  </ol>
+                </nav>
+                
+                  <div class="pt-3 pb-2 py-sm-4 pt-lg-4 align-items-center">
+                    <%- include('../../Partials/components/flashMessages') %>
+                </div>   
+      
+      
+                <div class="d-flex pt-3 mb-4 py-sm-4 pt-lg-4">
+                  <h2><%=vendor.username%> Profile Page</h2>
+                </div>
+
+        
+        <div class="row">
+          <aside class="col-lg-4 col-md-4 pb-5 mt-n5">
+
+            <form action="/edit-profile?_method=PUT" enctype="multipart/form-data" method="POST">
+
+            <div class="card card-body card-deep-shadow border-0 text-center">
+
+                <img src="<%=vendor.img_path%>" class="d-block big-rc rounded-circle mx-auto mb-3" width="162" alt="<%=vendor.username%>">
+
+                <label for="file-input" class="form-label">Profile Picture</label>
+                <p class="form-label fs-xs opacity-60">If you want to keep the current profile picture, leave this field Empty</p>
+                <p class="form-label fs-xs opacity-60">For Maximun Privacy we suggest you to keep the default picture</p>
+
+                <input class="form-control" type="file" accept="image/*" id="file-input" name="profileImg" multiple>
+
+                <div class="d-flex align-items mt-1">
+                  <p class="form-label fs-xs opacity-60 me-auto">I want to Reset my profile picture</p>
+                  <a class="fs-xs ms-auto" href="/reset-profile-picture">Reset Profile Picture</a>
+                </div>
+
+                <h5 class="fw-medium fs-lg mb-1 mt-3"><%=vendor.username%></h5>
+                <input class="form-control mt-3 mb-3" id="inline-form-input" type="text" name="job" placeholder="Specialization/Jobs" value="<%=vendor.job%>" maxlength="100">
+
+                <!-- Send Message Form  -->
+                <p class="btn btn-primary">Contact me</p>
+
+              </div>
+
+              <div class="card card-body card-deep-shadow border-0 mt-4">
+
+                <!-- Description -->
+                <div class="mt-2">
+                  <h5 class="fw-medium fs-lg mb-1">Profile Description</h5>
+                  <p class="fs-sm mb-1">Learn how to style your text<a class="ms-2" href="/docs/style-text">here</a></p>
+                  <textarea class="form-control" rows="5" name="description" placeholder="Describe your Profile..." maxlength="3000"><%=vendor.description%></textarea>
+              </div>
+
+              <!-- Achievement -->
+              <div class="mt-2">
+                <hr class="my-2">
+                <h5 class="fw-medium fs-lg mb-1 mt-4">Achievements:</h5>
+                <ul class="list-unstyled mb-3">
+                  <% for(let i = 0; i < 5; i++) { %>
+                    <li class="d-flex align-items-center mb-2">
+                      <input class="form-control mt-1" id="inline-form-input" type="text" name="achievement" maxlength="50" placeholder="Achievement #<%=i + 1%>"
+                      <% if (vendor.achievement[i]) { %>
+                        value='<%=vendor.achievement[i]%>'
+                      <% } %>
+                      >
+                    </li>
+                  <% } %>
+                </ul>
+            </div>
+
+
+            <!-- PGP KEYS -->
+            <div class="mt-2">
+              <hr class="my-2">
+              <h5 class="fw-medium fs-lg mb-1">Pgp Key</h5>
+              <textarea class="form-control" style="min-height: 20rem;"><%=vendor.verifiedPgpKeys%></textarea>
+              
+              <p class="fs-sm mt-3"><b>To Update/Delete your Pgp Key, </b><a href="/user/settings/security">Go Here</a></p>
+          </div>
+
+          <!-- Spoken Language -->
+          <div class="mt-2">
+            <hr class="my-2">
+            <h5 class="fw-medium fs-lg mb-1 mt-4">Fluent Languages:</h5>
+            <ul class="list-unstyled mb-3">
+              <% for(let i = 0; i < 5; i++) { %>
+                <li class="d-flex align-items-center mb-2">
+                  <input class="form-control mt-1" id="inline-form-input" type="text" name="languages" maxlength="50" placeholder="Languages #<%=i + 1%>"
+                  <% if (vendor.languages[i]) { %>
+                    value='<%=vendor.languages[i]%>'
+                  <% } %>
+                  >
+                </li>
+              <% } %>
+            </ul>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
+      
+          </div>
+
+        </form>
+
+          </aside>
+
+          <div class="col-md-8 pb-5 mb-lg-2 mb-lg-4">
+            <h3 class="h3 mb-4"><%=vendor.username%> Products :</h3>
+
+            <% if (!paginatedProducts.results.length) { %>
+              <h6 class="mb-4">You dont have any Product</h6>
+            <% } else { %>
+              <%- include('../../Partials/render/products', { products: paginatedProducts.results , nextPage: paginatedProducts.nextPage, COLUMN_NB: 3}) %>
+            <% } %>
+
+
+            <hr class="my-2">
+            <h2 class="h3 mb-4 mt-5">Reviews :</h2>
+            <%- include('../../Partials/render/reviews', {REVIEWS: reviews , NEXTPAGE: [1], PADDING: 5}) %>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <%- include('../../Partials/Statics/Footer') %>
+    
+  </body>
+</html>

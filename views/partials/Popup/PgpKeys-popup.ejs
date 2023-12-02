@@ -1,0 +1,25 @@
+<!--designed to work with css input popup technique - no js -->
+<div class="popup-dialog pgp-keys-popup">
+   <div class="rounded p-3">
+      <div class="text py-2"><%=otherUser.displayUsername || otherUser.user.username%> Pgp Keys</div>
+      
+      
+      <% let otherUserPgp %>
+      <% let otherUserPgpSettings = otherUser.conversationPgp || otherUser.user?.settings?.conversationPgp || undefined %>
+
+      <% if (otherUserPgpSettings === 'showPgp') { %>
+         <% otherUserPgp = otherUser.user.verifiedPgpKeys %>  
+      <% } else if (otherUserPgpSettings === 'dontShowPgp') { %> 
+         <% otherUserPgp = 'This user doesnt have a pgp keys...' %>
+      <% } else if (otherUser.conversationPgp) { %> 
+         <% otherUserPgp = otherUser.conversationPgp %>
+      <% } %>
+      
+      <textarea class="form-control my-3 p-2" style="min-height: 20rem;"><%-otherUserPgp && otherUserPgp !== 'customPgp' ? otherUserPgp : 'This user doesnt have a pgp keys...'%></textarea>
+
+      <div class="buttons">
+         <label for="<%=CHECKBOX_ID%>" class="btn btn-danger cancel-button">close</label>
+      </div>
+   </div>
+   <label for="<%=CHECKBOX_ID%>" class="popup-close"></label>
+</div>

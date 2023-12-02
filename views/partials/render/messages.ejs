@@ -1,0 +1,39 @@
+<% for(let i = 0; i < CONVERSATION.messages.length ; i++) {%>
+
+    <% const MESSAGE = CONVERSATION.messages[i] %>
+
+    <% if (MESSAGE.type === 'msg') { %>
+
+      <% const MESSAGE_POSITION = i %>
+      <% const LASTMESSAGE = CONVERSATION.messages[i + 1] ? false : true %>
+      <% const SHOW_POPUP = CONVERSATION.messages[i + 10] ? false : true %>
+      <% const CONVERSATION_ID = CONVERSATION.id %>
+
+      <% if (authuser.id !== CONVERSATION.users[MESSAGE.sender].userId) { %>
+        <%- include('../components/msg-other', { 
+          MESSAGE,
+          MESSAGE_POSITION,
+          LASTMESSAGE,
+          SHOW_POPUP,
+          OTHER_USER_IMGPATH,
+          CONVERSATION_ID,
+          PREVIOUS_MESSAGE: CONVERSATION.messages[i - 1],
+         }) %>
+      <% } else { %>
+        <%- include('../components/msg-own', { 
+          MESSAGE, 
+          MESSAGE_POSITION, 
+          LASTMESSAGE,
+          SHOW_POPUP,
+          CONVERSATION_ID, 
+          }) %>
+      <% } %>
+
+      <% } %>
+      
+      
+      <% if (MESSAGE.type === 'timestamp') { %>
+        <%-include('../components/msg-timestamp', {TIMESTAMP: MESSAGE.timestamp}) %>
+      <% } %>
+
+<% } %>

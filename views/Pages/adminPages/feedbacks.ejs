@@ -1,0 +1,156 @@
+<%- include('../../Partials/Statics/Head', {page: '- Feedbacks List'}) %>
+
+<body class="documentation-view">
+  <%- include('../../Partials/Statics/Navbar') %>
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <input id="mobile-menu-toggle" type="checkbox" hidden />
+  <label for="mobile-menu-toggle"
+    class="docs-aside-open-close"><%- include ("../../../public/assets/img/icons/move-left.svg") %></label>
+  <main class="page-wrapper">
+    <label class="clickout-mobile-menu" for="mobile-menu-toggle"></label>
+    <div>
+      <%- include('../../Partials/sidebarAdmin') %>
+
+      <!-- Page container -->
+      <div class="docs-con pt-5">
+
+        <div class="container-fluid container pt-4 pt-lg-5 pb-2 pb-lg-4">
+
+          <div class="pt-3 pb-4 py-sm-4 pt-lg-4">
+            <%- include('../../Partials/components/flashMessages') %>
+          </div>
+
+          <div>
+            <h4>Feedbacks :</h4>
+          </div>
+
+          <div class="filter-wrap d-lg-flex align-items-center justify-content-between pt-3 mt-lg-2">
+            <h1 class="me-3"></h1>
+            <form action="/feedback-filter" method="POST">
+              <div class="d-md-flex mb-3">
+                <select class="form-select me-4 mb-2 mb-md-0" name="reason" style="min-width: 240px;" required>
+                  <option value="all"
+                  <% if (!query.reason){ %>
+                    selected
+                  <% } %> >All reason</option>
+                  <option value="feedback"
+                  <% if (query.reason === 'feedback'){ %>
+                    selected
+                  <% } %> >Feedback</option>
+                  <option value="bug"
+                  <% if (query.reason === 'bug'){ %>
+                    selected
+                  <% } %> >Bug/Vulnerability</option>
+                  <option value="help"
+                  <% if (query.reason === 'help'){ %>
+                    selected
+                  <% } %> >Help</option>
+                  <option value="other"
+                  <% if (query.reason === 'other'){ %>
+                    selected
+                  <% } %> >Other</option>
+                </select>
+                <select class="form-select me-4 mb-2 mb-md-0" name="archived" style="min-width: 240px;" required>
+                  <option value="all"
+                  <% if (!query.archived) { %>
+                    selected
+                  <% } %> >Archived/Not Archived</option>
+
+                  <option value="true"
+                  <% if (query.archived === 'true') { %>
+                    selected
+                  <% } %> >Archived</option>
+
+                  <option value="false"
+                  <% if (query.archived === 'false') { %>
+                    selected
+                  <% } %> >Not Archived</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+              </div>
+            </form>
+          </div>
+
+          <% if (!feedbacks.results.length) { %>
+            <h6 class="mt-5" style="text-align: center">No Feedbacks, for now...</h6>
+          <% } %>
+
+            <% for(let i = 0; i < feedbacks.results.length; i++) { %>
+            <article class="card card-hover border-0 card-deep-shadow overflow-hidden mt-4">
+              <div class="row g-0">
+                <div>
+                  <div class="card-body">
+
+                    <div class="d-flex align-items-center mb-3">
+                      <p class="mb-1">Reason: <span class="ms-2"><%=feedbacks.results[i].reason %></span></p>
+                    </div>
+
+                    <span>
+                      <p class="mb-0">Message :</p>
+                      <p class="d-flex align-items-center text-decoration-none me-3">
+                        <%= feedbacks.results[i].message %>
+                      </p>
+                    </span>
+
+                    <hr class="mt-2 mb-2">
+
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                      <div class="d-flex align-items-center py-2">
+                        <span>
+                          <p class="mb-0">Username:</p>
+                          <% if (feedbacks.results[i].username) { %>
+                          <a href="/user/profile/<%=feedbacks.results[i].username%>?productPage=1&reviewPage=1"
+                            class="d-flex align-items-center fw-bold text-decoration-none me-3 mb-0">
+                            <%= feedbacks.results[i].username %>
+                          </a>
+                          <% } else { %>
+                          <p class="mb-0">Not Included</p>
+                          <% } %>
+                        </span>
+  
+                        <span class="ms-4">
+                          <p class="mb-0">Email:</p>
+                          <% if (feedbacks.results[i].email) { %>
+                          <p class="d-flex align-items-center fw-bold text-decoration-none me-3 mb-0">
+                            <%= feedbacks.results[i].email %>
+                          </p>
+                          <% } else { %>
+                          <p class="mb-0">Not Included</p>
+                          <% } %>
+                        </span>
+                      </div>
+
+
+
+                      <div class="d-flex flex-column flex-sm-row py-2 responsive-column">
+                        <form action="/archive-feedback/<%=feedbacks.results[i].id%>?<%=url[1]%>" method="POST">
+                          <% if (!feedbacks.results[i].archived) { %>
+                          <button type="submit" class="btn btn-success">Archive Feedback</button>
+                          <% } else { %>
+                          <button type="submit" class="btn btn-primary">Unarchive Feedback</button>
+                          <% } %>
+                        </form>
+
+                        <form action="/delete-feedback/<%=feedbacks.results[i].id%>?<%=url[1]%>" method="POST">
+                          <button type="submit" class="btn btn-danger ms-3">
+                            Delete Feedback
+                          </button>
+                        </form>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <% } %>
+            <div class="mt-5">
+              <%- include('../../Partials/components/pagination', {nextPage: feedbacks.nextPage, currentPage: parseInt(query.feedbackPage), queryName: 'feedbackPage'}) %>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <%- include('../../Partials/Statics/Footer') %>
+</body>

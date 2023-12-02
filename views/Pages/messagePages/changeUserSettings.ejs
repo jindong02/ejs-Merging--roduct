@@ -1,0 +1,110 @@
+<%- include('../../Partials/Statics/Head', {page: "- " + 'Customize Settings'}) %>
+
+<body>
+  <main class="page-wrapper d-grid" style="place-content: center;">
+      <%- include('../../Partials/Statics/Navbar') %>
+      
+      <section class="position-relative h-100 pt-5 pb-4 mb-5">
+        
+        <%- include('../../Partials/components/flashMessages') %>
+
+
+         <div class="container d-flex flex-wrap justify-content-center align-content-center h-100">
+           <div class="w-100 card card-deep-shadow align-self-end p-5" style="max-width: 526px;">
+            
+            <h3 class="text-center mb-5">Customize your Conversation Settings</h3>
+
+
+
+        <form action='/change-user-conversation-settings/<%=conversation.id%>' method="POST" class="needs-validation mb-2">
+        <div class="row">
+
+
+        <% const yourPosition = authuser.id === conversation.users[1].userId ? 1 : 0 %>
+        <% const currentMessageExpiring = conversation.users[yourPosition].messageExpiryDate || conversation.users[yourPosition].user.settings.messageSettings.messageExpiryDate %>
+
+        <div class="mt-2">
+            <label for="select-input" class="form-label">My message Expire After:</label>
+            <select name="messageExpiryDate" class="form-select mt-1" id="select-input">
+                <option value="never"
+                <% if (!currentMessageExpiring || currentMessageExpiring === 'never') { %>
+                  selected
+               <% } %>
+               >Never</option> 
+             <option value="1"
+             <% if (currentMessageExpiring == 1) { %>
+                 selected
+             <% } %>
+             >1 days</option> 
+             <option value="3"
+             <% if (currentMessageExpiring == 3) { %>
+                 selected
+             <% } %>
+             >3 days</option> 
+             <option value="7"
+             <% if (currentMessageExpiring == 7) { %>
+                 selected
+             <% } %>
+             >1 weeks</option> 
+             <option value="30"
+             <% if (currentMessageExpiring == 30) { %>
+                 selected
+             <% } %>
+             >≈ 1 months (30days)</option> 
+           </select>
+           <div class="d-flex">
+             <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+           </div>
+         </div>
+
+       <% currentPgpSettings = conversation.users[yourPosition].conversationPgp || conversation.users[yourPosition]?.user?.settings?.messageSettings?.conversationPgp%>
+
+       <div class="mt-2">
+           <label for="select-input-saw-message" class="form-label mb-0">Pgp Key:</label>
+           <select name="conversationPgp" class="form-select mt-1" id="select-input-saw-message">
+             <option value="showPgp"
+             <% if (currentPgpSettings === 'showPgp') { %>
+                selected
+             <% } %>
+             >Show my Pgp Key</option> 
+             <option value="dontShowPgp"
+             <% if (currentPgpSettings === 'dontShowPgp') { %>
+                selected
+             <% } %>
+             >Dont show my Pgp key</option> 
+             <option value="customPgp"
+             <% if (currentPgpSettings !== 'showPgp' && currentPgpSettings !== 'dontShowPgp') { %>
+                 selected
+             <% } %>
+             >Show a Custom Pgp Key (Advanced User Only)</option> 
+           </select>   
+           <div class="d-flex">
+             <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+           </div>
+
+           <%if (currentPgpSettings !== 'showPgp' && currentPgpSettings !== 'dontShowPgp') { %>
+             <label for="customPgp" class="form-label mb-0">Custom Pgp Key:</label>
+             <textarea rows="1" name="customPgp" id="customPgp" placeholder="Enter your custom pgp key here" class="form-control form-control-md mt-1 mb-4 overflow-container" style="height: 5rem;"><%- conversation.users[yourPosition].customPgp || authuser.settings.messageSettings.customPgp %></textarea>
+             <hr class="my-4">
+             <% } %>      
+         </div> 
+
+
+
+               </div>
+
+               <button type="submit" class="btn btn-primary shadow-primary btn-lg w-100">Change My Settings</button>
+             </form>
+
+           </div>
+         </div>
+         
+   </section>
+     </main>
+
+     <div class="mt-5">
+      <%- include('../../Partials/Statics/Footer') %>
+     </div>
+
+  </body>
+</html>

@@ -1,0 +1,75 @@
+<%- include('../../Partials/Statics/Head', {page: '- Contact Us'}) %>
+  <!-- Body -->
+  <body>
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+    <%- include('../../Partials/Statics/Navbar') %>
+
+
+      <!-- Page content -->
+      <section class="container contactus-container">
+
+          <div class="pt-3 pb-4 py-sm-4 pt-lg-4">
+            <%- include('../../Partials/components/flashMessages') %>
+        </div>   
+
+        <!-- Breadcrumb -->
+        <nav class="pt-4 mt-lg-3" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Contacts Us</li>
+          </ol>
+        </nav>
+
+        <!-- Page title -->
+        <h1 class="pt-4 mt-lg-3 pb-3 pb-lg-4">Contact Us</h1>
+        <!-- Contact form -->
+        <div class="card card-deep-shadow rounded-3 py-5 px-3 px-sm-0 mb-xl-4">
+          <form class="row justify-content-center py-lg-3 py-xl-4" action="/contactus" method="POST">
+            <div class="col-xl-8 col-lg-9 col-md-10 col-sm-11">
+              <h2 class="h1 pb-lg-1 mb-4">Contact Us</h2>
+              <p class="fs-lg text-muted pb-lg-1 mb-4">Want to give us a feedback? You found a bug? You have encouter a problem?</p>
+              <div class="row">
+                <div class="col-sm-6 mb-4">
+                  <label for="reason" class="form-label fs-base">Reason</label>
+                  <select name="reason" id="reason" class="form-select form-control-lg" required> 
+                    <option value="feedback">Feedback</option>
+                    <option value="bug">Bug/Vulnerability</option>
+                    <option value="help">Need Help</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 mb-4">
+                  <label for="email" class="form-label fs-base">Email <p class="d-inline fs-xs opacity-70 ms-2">* Optionnal</p></label>
+                  <input type="text" id="email" class="form-control form-control-lg" name="email" minlength="3" maxlength="50" placeholder="Email">
+                </div>
+                <div class="col-12 mb-4">
+                  <label for="message" class="form-label fs-base">Message</label>
+                  <textarea id="message" name="message" class="form-control form-control-lg" rows="4" minlength="10" maxlength="3000" placeholder="Type your Message here..." required></textarea>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-between flex-wrap responsive-element">
+                <% if (authuser) { %>
+                  <div class="col-sm-6">
+                    <input class="form-check-input" type="checkbox" name="username" id="username">
+                    <label class="form-check-label ms-2" for="username">Include My Username</label>
+                  </div>
+                <% } %>
+                <button type="submit" class="btn btn-primary btn-lg shadow-primary">Contact Us</button>  
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+
+    <!-- Footer -->
+    <div class="mt-4">
+    <%- include('../../Partials/Statics/Footer') %>
+</div>
+  </body>
+</html>

@@ -1,0 +1,511 @@
+<%- include('../../Partials/Statics/Head', {page: '- Privacy Settings' }) %>
+
+  <body>
+
+
+    <main class="page-wrapper">
+
+      <%- include('../../Partials/Statics/Navbar') %>
+
+        <!-- Breadcrumb -->
+
+
+        <!-- Page content -->
+        <section class="container pt-5" style="max-width: 1520px;">
+
+
+          <nav class="pt-2 pb-5" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Settings</li>
+            </ol>
+          </nav>
+
+
+
+          <div class="row setting-view">
+
+            <%- include('../../Partials/sidebarSettings') %>
+
+
+              <div class="col-md-8 pb-5 mb-lg-2 mb-lg-4">
+                <!-- <div class="col-md-7 pb-5 mb-lg-2 mb-lg-4"> Saved -->
+
+                <div class="mb-3">
+                  <%- include('../../Partials/components/flashMessages') %>
+                </div>
+
+                <h1 class="h2 pt-xl-1">Privacy</h1>
+
+
+                <div class="card pt-5 px-5 pb-4 mt-4">
+                  <div class="mb-3">
+                    <h2 class="h5 mb-2">Default Conversation Settings:</h2>
+                    <p class="fs-sm opacity-70 my-0">Here you can choose the default settings that will be applied to
+                      the conversation that <b>YOU</b> create</p>
+                    <p class="fs-sm opacity-70 my-0">Keep in mind that you will be able to change those settings
+                      manually once you have have created a conversation</p>
+                  </div>
+
+                  <form action="/conversation-settings" method="POST">
+
+                    <div class="mt-2">
+
+                      <% const messageSettings=authuser.settings.messageSettings %>
+
+                        <label for="select-input-saw-message" class="form-label mb-0">Privacy measure to hide
+                          Username:</label>
+                        <p class="fs-xs opacity-70 my-0">Once a conversation has started, you wont be able to change
+                          your username</p>
+                        <p class="fs-xs opacity-70 my-0 mb-1">This is the only thing that you wont be able to change
+                          once you've created the conversation</p>
+                        <select name="displayUsername" class="form-select" id="select-input-saw-message">
+                          <option value="ownUsername" <% if (messageSettings.displayUsername==='ownUsername' ) { %>
+                            selected
+                            <% } %>
+                              >Use my real Username
+                          </option>
+                          <option value="generateRandom" <% if (messageSettings.displayUsername==='generateRandom' ) {
+                            %>
+                            selected
+                            <% } %>
+                              >Let the site generate me Fake Random Username
+                          </option>
+                          <option value="customUsername" <% if (messageSettings.displayUsername==='customUsername' ) {
+                            %>
+                            selected
+                            <% } %>
+                              >Use a Fake Custom Username
+                          </option>
+                        </select>
+
+                        <div class="d-flex">
+                          <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+                        </div>
+
+                        <%if (messageSettings.displayUsername==='customUsername' ) { %>
+                          <label for="customUsername" class="form-label mb-0">Custom Username:</label>
+                          <input class="form-control mb-3 mt-1" name="customUsername" id="customUsername"
+                            placeholder="Enter your custom username Here" value="<%=messageSettings.customUsername%>">
+                          <% } %>
+
+                            <hr class="mb-3 mt-3">
+                    </div>
+
+                    <div class="mt-2">
+                      <label for="select-input-saw-message" class="form-label mb-0">Pgp Key:</label>
+                      <select name="conversationPgp" class="form-select mt-1" id="select-input-saw-message">
+                        <option value="showPgp" <% if (messageSettings.conversationPgp==='showPgp' ) { %>
+                          selected
+                          <% } %>
+                            >Show my Pgp Key
+                        </option>
+                        <option value="dontShowPgp" <% if (messageSettings.conversationPgp==='dontShowPgp' ) { %>
+                          selected
+                          <% } %>
+                            >Dont show my Pgp key
+                        </option>
+                        <option value="customPgp" <% if (messageSettings.conversationPgp==='customPgp' ) { %>
+                          selected
+                          <% } %>
+                            >Show a Custom Pgp Key (Advanced User Only)
+                        </option>
+                      </select>
+                      <div class="d-flex">
+                        <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+                      </div>
+
+                      <%if (messageSettings.conversationPgp==='customPgp' ) { %>
+                        <label for="customPgp" class="form-label mb-0">Custom Pgp Key:</label>
+                        <textarea rows="1" name="customPgp" id="customPgp" placeholder="Enter your custom pgp key here"
+                          class="form-control form-control-md mt-1 mb-4 overflow-container"
+                          required><%-messageSettings.customPgp%></textarea>
+                        <% } %>
+
+                          <hr class="mb-3">
+                    </div>
+
+
+                    <div class="mt-2">
+                      <label for="select-input" class="form-label">My message Expire After:</label>
+                      <select name="messageExpiryDate" class="form-select mt-1" id="select-input">
+                        <option value="" <% if (!messageSettings.messageExpiryDate) { %>
+                          selected
+                          <% } %>
+                            >Never
+                        </option>
+                        <option value="1" <% if (messageSettings.messageExpiryDate===1) { %>
+                          selected
+                          <% } %>
+                            >1 days
+                        </option>
+                        <option value="3" <% if (messageSettings.messageExpiryDate===3) { %>
+                          selected
+                          <% } %>
+                            >3 days
+                        </option>
+                        <option value="7" <% if (messageSettings.messageExpiryDate===7) { %>
+                          selected
+                          <% } %>
+                            >1 weeks
+                        </option>
+                        <option value="30" <% if (messageSettings.messageExpiryDate===30) { %>
+                          selected
+                          <% } %>
+                            >≈ 1 months (30days)
+                        </option>
+                      </select>
+                      <div class="d-flex">
+                        <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+                      </div>
+
+                      <hr class="mb-3">
+                    </div>
+
+                    <div class="mt-2">
+                      <label for="select-input" class="form-label">Delete Inactive Conversation After:</label>
+                      <select name="convoExpiryDate" class="form-select mt-1" id="select-input">
+                        <option value="" <% if (!messageSettings.convoExpiryDate) { %>
+                          selected
+                          <% } %>
+                            >Never
+                        </option>
+                        <option value="3" <% if (messageSettings.convoExpiryDate===3) { %>
+                          selected
+                          <% } %>
+                            >3 days
+                        </option>
+                        <option value="7" <% if (messageSettings.convoExpiryDate===7) { %>
+                          selected
+                          <% } %>
+                            >1 weeks
+                        </option>
+                        <option value="30" <% if (messageSettings.convoExpiryDate===30) { %>
+                          selected
+                          <% } %>
+                            >≈ 1 month (30days)
+                        </option>
+                        <option value="180" <% if (messageSettings.convoExpiryDate===180) { %>
+                          selected
+                          <% } %>
+                            >≈ 6 months (180days)
+                        </option>
+                        <option value="365" <% if (messageSettings.convoExpiryDate===365) { %>
+                          selected
+                          <% } %>
+                            > 1 years (365days)
+                        </option>
+                      </select>
+                      <div class="d-flex">
+                        <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+                      </div>
+
+                      <hr class="mb-3">
+                    </div>
+
+                    <div class="mt-2">
+                      <label for="select-input-saw-message" class="form-label mb-0">Timestamps the Messages in
+                        Conversation:</label>
+                      <select name="includeTimestamps" class="form-select mt-1" id="select-input-saw-message">
+                        <option value="true" <% if (messageSettings.includeTimestamps) { %>
+                          selected
+                          <% } %>
+                            > <p>Yes<span class="fs-sm opacity-70"> (More Convenient)</span></p>
+                        </option>
+                        <option value="" <% if (!messageSettings.includeTimestamps) { %>
+                          selected
+                          <% } %>
+                            >No<span class="fs-sm opacity-70"> (Recommended for Privacy)</span></p>
+                        </option>
+                      </select>
+                      <div class="d-flex">
+                        <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+                      </div>
+
+                      <hr class="mb-3">
+                    </div>
+
+                    <div class="mt-2">
+                      <label for="select-input-saw-message" class="form-label mb-0">Check if a user has seen the last
+                        Message:</label>
+                      <p class="fs-xs opacity-70 my-0 mb-1">In resume: Do you want to be left on read or not</p>
+                      <select name="messageView" class="form-select" id="select-input-saw-message">
+                        <option value="true" <% if (messageSettings.messageView) { %>
+                          selected
+                          <% } %>
+                            > <p>Yes<span class="fs-sm opacity-70"> (More Convenient)</span></p>
+                        </option>
+                        <option value="" <% if (!messageSettings.messageView) { %>
+                          selected
+                          <% } %>
+                            >No<span class="fs-sm opacity-70"> (Recommended for Privacy)</span></p>
+                        </option>
+                      </select>
+                      <div class="d-flex">
+                        <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+                      </div>
+
+                      <hr class="mb-3">
+                    </div>
+
+                    <div class="mt-2">
+                      <label for="select-input-delete-empty" class="form-label">Delete my Conversation when all messages
+                        in them have been deleted:</label>
+                      <select name="deleteEmpty" class="form-select mt-1" id="select-input-delete-empty">
+                        <option value="true" <% if (messageSettings.deleteEmpty) { %>
+                          selected
+                          <% } %>
+                            > <p>Yes<span class="fs-sm opacity-70"> (Recommended for Privacy)</span></p>
+                        </option>
+                        <option value="" <% if (!messageSettings.deleteEmpty) { %>
+                          selected
+                          <% } %>
+                            >No<span class="fs-sm opacity-70"> (More Convenient)</span></p>
+                        </option>
+                      </select>
+                      <div class="d-flex">
+                        <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+                      </div>
+
+                    </div>
+
+
+                    <div class="d-flex mt-3 mb-2 responsive-column">
+                      <button type="submit" class="btn btn-primary ms-auto">Save</button>
+                  </form>
+
+                  <form action="/reset-privacy?type=conversation" method="POST" class="padding-left-10">
+                    <button type="submit" class="btn" style="background: rgba(255, 145, 0, 0.767);">Reset to
+                      Default</button>
+                  </form>
+                </div>
+              </div>
+
+
+              <div class="card pt-5 px-5 pb-4 mt-4">
+                <h2 class="h5 mb-2">Order</h2>
+                <p class="fs-sm opacity-70">Here you can decide how you want us to handle your Provided Information upon
+                  the completion of an order</p>
+
+                <form action="/order-settings" method="POST">
+                  <label for="privateinfo-expire" class="form-label">Delete my Private Information after : </label>
+                  <select name="autoDeleteProvidedInfo" class="form-select mb-4" id="privateinfo-expire">
+                    <option value="never" <% if (!authuser.settings.privateInfoExpiring) { %>
+                      selected
+                      <% } %>
+                        >Never
+                    </option>
+                    <option value="-1" <% if (authuser.settings.privateInfoExpiring===-1) { %>
+                      selected
+                      <% } %>
+                        >Instantly
+                    </option>
+                    <option value="1" <% if (authuser.settings.privateInfoExpiring===1) { %>
+                      selected
+                      <% } %>
+                        >1 days
+                    </option>
+                    <option value="3" <% if (authuser.settings.privateInfoExpiring===3) { %>
+                      selected
+                      <% } %>
+                        >3 days
+                    </option>
+                    <option value="7" <% if (authuser.settings.privateInfoExpiring===7) { %>
+                      selected
+                      <% } %>
+                        >1 weeks
+                    </option>
+                    <option value="30" <% if (authuser.settings.privateInfoExpiring===30) { %>
+                      selected
+                      <% } %>
+                        >≈ 1 months (30days)
+                    </option>
+                  </select>
+
+                  <div class="d-flex mb-2 mt-4 responsive-column">
+                    <button type="submit" class="btn btn-primary ms-auto">Save</button>
+                </form>
+
+                <form action="/reset-privacy?type=order" method="POST" class="padding-left-10">
+                  <button type="submit" class="btn" style="background: rgba(255, 145, 0, 0.767);">Reset to
+                    Default</button>
+                </form>
+              </div>
+          </div>
+
+
+          <div class="card pt-5 px-5 pb-4 mt-4">
+            <h2 class="h5 mb-2">User</h2>
+            <p class="fs-sm opacity-70">Here you can decide how you want us to handle your Account, once you have become
+              inactive</p>
+
+            <form action="/account-settings" method="POST">
+              <label for="account-expire" class="form-label mt-0">Delete my Account after:</label>
+              <select name="autoDeleteAccount" class="form-select mb-4" id="account-expire">
+                <option value="never" <% if (!authuser.settings.userExpiring) { %>
+                  selected
+                  <% } %>
+                    >Never
+                </option>
+                <option value="7" <% if (authuser.settings.userExpiring===7) { %>
+                  selected
+                  <% } %>
+                    >1 week
+                </option>
+                <option value="14" <% if (authuser.settings.userExpiring===14) { %>
+                  selected
+                  <% } %>
+                    >2 weeks
+                </option>
+                <option value="30" <% if (authuser.settings.userExpiring===30) { %>
+                  selected
+                  <% } %>
+                    >≈ 1 months (30days)
+                </option>
+                <option value="365" <% if (authuser.settings.userExpiring===365) { %>
+                  selected
+                  <% } %>
+                    >1 years
+                </option>
+              </select>
+              <div class="d-flex mb-2 mt-4 responsive-column">
+                <button type="submit" class="btn btn-primary ms-auto">Save</button>
+            </form>
+
+            <form action="/reset-privacy?type=account" method="POST" class="padding-left-10">
+              <button type="submit" class="btn" style="background: rgba(255, 145, 0, 0.767);">Reset to Default</button>
+            </form>
+          </div>
+          </div>
+
+
+          <div class="card pt-5 px-5 pb-4 mt-4">
+            <h2 class="h5 mb-2">Notifications</h2>
+            <p class="fs-sm opacity-70">How do you want us store your notificition</p>
+
+            <form action="/notifications-settings" method="POST">
+
+              <% const NOTIFICATION_SETTING=authuser.settings?.notificationsSettings || undefined %>
+
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" id="record-notification" name="recordNotification"
+                    class="form-check-input mb-1" <% if (NOTIFICATION_SETTING.recordNotification) { %>
+                  checked
+                  <% } %>
+                    >
+                    <label for="record-notification" class="form-check-label fs-base ms-2">I want to recieve
+                      notification</label>
+                </div>
+                <p class="fs-xs opacity-70">If this isnt check, we will not record any notifications that would be sent
+                  to you
+                  , if you value your privacy above all, you can uncheck this, but this might lead to some confusion
+                  since you will not be alerted of event concerning your account.
+                  <br>Example: User delete a conversation with you -> you login and the conversation as disapear -> you
+                  dont have any alert, notification or reason given to you
+                </p>
+
+                <% if (NOTIFICATION_SETTING.recordNotification) { %>
+
+                  <div class="d-flex align-items-center">
+                    <input type="checkbox" id="saw-notification" name="seen" class="form-check-input mb-1" <% if
+                      (NOTIFICATION_SETTING.seen) { %>
+                    checked
+                    <% } %>
+                      >
+                      <label for="saw-notification" class="form-check-label fs-base ms-2">Record if I saw a certain
+                        notification or not</label>
+                  </div>
+                  <p class="fs-xs opacity-70">This has for only use to allow us to know if you have a new notification
+                    or not, and to alert you about it, by putting a purple circle on the notifications Bell in the
+                    navbar</p>
+
+                  <hr class="mb-3 mt-3">
+
+                  <label for="expire-notification" class="form-label">We will delete your notifications:</label>
+                  <select class="form-select mb-4" name="expiryDateNotification" id="expire-notification">
+                    <option value="" <% if (!NOTIFICATION_SETTING.expiryDate) { %>
+                      selected
+                      <% } %>
+                        >Never
+                    </option>
+                    <option value="1" <% if (NOTIFICATION_SETTING.expiryDate===1) { %>
+                      selected
+                      <% } %>
+                        >1 day after creation
+                    </option>
+                    <option value="3" <% if (NOTIFICATION_SETTING.expiryDate===3) { %>
+                      selected
+                      <% } %>
+                        >3 days after creation
+                    </option>
+                    <option value="7" <% if (NOTIFICATION_SETTING.expiryDate===7) { %>
+                      selected
+                      <% } %>
+                        >7 days after creation
+                    </option>
+                    <option value="30" <% if (NOTIFICATION_SETTING.expiryDate===30) { %>
+                      selected
+                      <% } %>
+                        >30 days after creation
+                    </option>
+                    <option value="-1" <% if (NOTIFICATION_SETTING.expiryDate===-1) { %>
+                      selected
+                      <% } %>
+                        >After I saw them
+                    </option>
+                  </select>
+
+
+                  <hr class="mb-3 mt-3">
+
+                  <details class="py-2 px-2">
+                    <!--style="border: 0.5px solid rgba(190, 190, 190); border-radius: 5px;"-->
+                    <summary class="fs-md fw-bold">On what do you want to recieve a Notification</summary>
+
+                    <hr class="mb-2 mt-2">
+
+                    <% for(let i=0; i < notificationChoices.length; i++) { %>
+
+                      <div class="d-flex align-items-center mt-1">
+                        <input type="checkbox" id="<%=notificationChoices[i].name%>"
+                          name="<%=notificationChoices[i].name%>" class="form-check-input mb-1" <% if
+                          (NOTIFICATION_SETTING.sendNotification &&
+                          NOTIFICATION_SETTING.sendNotification[notificationChoices[i].name]) { %>
+                        checked
+                        <% } %>
+                          >
+                          <label for="<%=notificationChoices[i].name%>" class="form-check-label fs-sm ms-2">
+                            <%=notificationChoices[i].text%>
+                          </label>
+                      </div>
+
+                      <% } %>
+
+                  </details>
+
+                  <% } %>
+
+                    <div class="d-flex mb-2 mt-4 responsive-column">
+                      <button type="submit" class="btn btn-primary ms-auto">Save</button>
+            </form>
+
+            <form action="/reset-privacy?type=notifications" method="POST" class="padding-left-10">
+              <button type="submit" class="btn" style="background: rgba(255, 145, 0, 0.767);">Reset to Default</button>
+            </form>
+          </div>
+          </div>
+
+          </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <%- include('../../Partials/Statics/Footer') %>
+  </body>
+
+  </html>

@@ -1,0 +1,154 @@
+<%- include('../../Partials/Statics/Head', {page: "- " + 'Create Hidden Conversation'}) %>
+
+<body>
+  <main class="page-wrapper d-grid" style="place-content: center;">
+      <%- include('../../Partials/Statics/Navbar') %>
+      
+      <section class="position-relative h-100 pt-5 pb-4 mb-5">
+        
+        <%- include('../../Partials/components/flashMessages') %>
+
+         <div class="container d-flex flex-wrap justify-content-center align-content-center h-100">
+           <div class="w-100 card card-deep-shadow align-self-end p-5" style="max-width: 526px;">
+            
+            <h3 class="text-center mb-5">Create a Hidden Conversation</h3>
+
+
+            <form action='/create-hidden-conversation/<%=query.id%>' method="POST" class="needs-validation mb-2">
+              <div class="row">
+
+                <div class="position-relative">
+                  <label for="username" class="form-label fs-base mb-0">Conversation Id:</label>
+                  <p class="fs-xs opacity-80 fw-bold mb-0 mt-1">Save this Id somewhere safe</p>
+                  <p class="fs-xs opacity-80 mb-1 mt-0">It is better to let this Id as it is by default</p>
+                  <input type="text" id="username" class="form-control form-control-lg" name="conversationId" minlength="30" maxlength="200" value="<%=randomId%>" placeholder="Choose your Conversation Id..." required>
+                </div>
+
+                <div>
+                <hr class="my-4 opacity-70">
+              </div>
+
+                <div class="mb-4">
+                  <label for="password" class="form-label fs-base mb-0">Conversation Password</label>
+                  <p class="fs-xs opacity-80 mb-1">You will need to enter this password to access this conversation</p>
+                  <input type="password" id="password" class="form-control form-control-lg" name="conversationPassword" minlength="8" maxlength="200" placeholder="Type your Conversation Password..." required>
+                </div>
+
+
+                <div class="">
+                  <label for="password" class="form-label fs-base mb-1">Confirm Conversation Password</label>
+                  <input type="password" id="password" class="form-control form-control-lg" name="confirmConversationPassword" minlength="8" maxlength="200" placeholder="Type your Conversation Password..." required>
+                </div>
+
+
+                <div>
+                  <hr class="my-4 opacity-70">
+                </div>
+
+                <div class="">
+                  <label for="password" class="form-label fs-base mb-0">Conversation Username</label>
+                  <p class="fs-xs opacity-80 mb-1">If you leave this field empty, we will generate a random one for you</p>
+                  <input type="text" id="password" class="form-control form-control-lg" name="displayUsername" minlength="3" maxlength="25" value="<%=authuser?.settings.messageSettings.customUsername%>" placeholder="Type your Conversation Username...">
+                  <div class="d-flex">
+                    <p class="ms-auto"><a class="fs-xs" href="/docs/style-text">Learn More</a></p>
+                  </div>
+                </div>
+
+                <div>
+                  <hr class="mb-4 opacity-70">
+                </div>
+
+                <% if (authuser?.settings.messageSettings.conversationPgp === 'customPgp') { %>
+                <div class="">
+                  <label class="form-check-label" for="customPgp">Choose your Custom Pgp key</label>
+                  <textarea class="form-control mt-1" name="customPgp" id="conversationPgp" placeholder="Enter Custom Pgp" minlength="2" maxlength="1000" required><%-authuser.settings.messageSettings.customPgp%></textarea>
+                </div>
+
+
+                <div>
+                  <hr class="my-4 opacity-70">
+                </div>
+                <% } %>
+
+
+                <div class="">
+                  <label for="select-input" class="form-label">My message Expire After:</label>
+                  <select name="messageExpiryDate" class="form-select mt-1" id="select-input">
+                    <option value="never">Never</option> 
+                    <option value="1">1 days</option> 
+                    <option value="3">3 days</option> 
+                    <option value="7" selected>1 weeks</option> 
+                    <option value="30">≈ 1 months (30days)</option> 
+                  </select>
+                </div>
+
+
+                <div>
+                  <hr class="my-4 opacity-70">
+                </div>
+
+
+                <div title="You cant change those Settings in a Hidden Conversation">
+                  <div class="d-flex align-items-center mt-2 opacity-70" style="pointer-events: none;">
+                      <input class="form-check-input m-0" type="checkbox" name="" id="includeTimestamps"/>
+                      <label class="form-check-label px-2" for="includeTimestamps">Record Timestamp</label>
+                   </div>
+                   
+                   <div class="d-flex align-items-center mt-2 opacity-70" style="pointer-events: none;">
+                      <input class="form-check-input m-0" type="checkbox" name="" id="messageView" />
+                      <label class="form-check-label px-2" for="messageView">Record if seeing message</label>
+                   </div>
+                   
+                   <div class="d-flex align-items-center mt-2 opacity-70" style="pointer-events: none;">
+                      <input class="form-check-input m-0" type="checkbox" name="" id="deleteEmpty"checked/>
+                      <label class="form-check-label px-2" for="deleteEmpty">Delete Conversation, if there is not more message</label>
+                   </div> 
+                  </div>
+
+                  <div>
+                    <hr class="my-4 opacity-70">
+                  </div>
+
+                  <div class="">
+                    <label for="select-input" class="form-label">Delete Inactive Conversation After:</label>
+                    <select name="convoExpiryDate" class="form-select mt-1" id="select-input">
+                      <option value="3">3 days</option> 
+                      <option value="7">1 weeks</option> 
+                      <option value="30" selected>≈ 1 month (30days)</option>
+                      <option value="180">≈ 6 months (180days)</option>
+                      <option value="365"> 1 years (365days)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <hr class="my-4 opacity-70">
+                  </div>
+
+
+                  <div class="edit-content">
+                    <label class="form-check-label fw-bold" for="content">Type your Message</label>
+                    <textarea class="form-control mt-1" name="content" id="content" placeholder="Message..." minlength="2"
+                       maxlength="1000" required></textarea>
+                 </div>
+
+                <div class="mb-4">
+                 <a href="/docs/" class="btn btn-link btn-lg w-100">Not Sure what is a Hidden Converstion?</a>
+                </div>
+
+               </div>
+               <button type="submit" class="btn btn-primary shadow-primary btn-lg w-100">Create Hidden Conversation</button>
+
+
+             </form>
+
+           </div>
+         </div>
+         
+   </section>
+     </main>
+     
+     <div class="mt-5">
+     <%- include('../../Partials/Statics/Footer') %>
+    </div>
+  </body>
+</html>

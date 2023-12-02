@@ -1,0 +1,275 @@
+<%- include('../../Partials/Statics/Head', {page: '- Security Settings'}) %>
+<body>
+
+    
+        <main class="page-wrapper">
+
+            <%- include('../../Partials/Statics/Navbar') %>
+
+          <!-- Breadcrumb -->
+
+
+          <!-- Page content -->
+          <section class="container pt-5" style="max-width: 1520px;">
+
+
+            <nav class="pt-2 pb-5" aria-label="breadcrumb">
+              <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                  <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Settings</li>
+              </ol>
+            </nav>
+
+
+
+            <div class="row setting-view">
+              
+              <%- include('../../Partials/sidebarSettings') %>
+  
+
+              <div class="col-md-8 pb-5 mb-lg-2 mb-lg-4">  
+                <!-- <div class="col-md-7 pb-5 mb-lg-2 mb-lg-4"> Saved -->
+
+                  <div class="mb-3">
+                    <%- include('../../Partials/components/flashMessages') %>
+                  </div>   
+
+                  <h1 class="h2 pt-xl-1">Security</h1>
+
+                  <div class="card px-5 pt-5 mt-4">
+                    <% if (authuser.email) { %>
+                      <h2 class="h5 mb-3">Change Email Address</h2>
+                    <% } else { %> 
+                      <h2 class="h5 mb-3">Add Email Address</h2>
+                    <% } %>
+                  <form action="/add-email" method="POST">
+
+                    <div class="position-relative">
+                      <input type="text" name="email" placeholder="Email Address" class="form-control form-control-lg mb-2" value="<%=authuser.email%>" required>
+                      <% if (authuser.email_verification_code) { %>
+                        <span class="badge bg-orange shadow-orange top-right">Not Verified</span>
+                      <% } else if (authuser.email) { %>
+                        <span class="badge bg-success shadow-success top-right">Verified</span>
+                      <% } %>
+
+                    </div>
+
+            
+                    
+                    <div class="d-flex align-items-center mt-3 mb-5 justify-content-end flex-wrap">
+                      <% if (authuser.email) { %>
+                        <div class="d-flex form-check align-items-center w-100 mb-4">
+                          <input class="form-check-input" type="checkbox" id="confirm-email" required>
+                          <label class="form-check-label" for="confirm-email">I Understand that it might cause some problems</label>
+                        </div>
+                          <button type="submit" class="btn btn-primary ms-auto">Change</button>
+                      <% } else { %>
+                          <button type="submit" class="btn btn-primary">Add Email Address</button>
+                      <% } %>
+                    </form>
+                      <% if (authuser.email) { %> 
+                        <form action="/delete-email" method="POST" class="padding-left-10">
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                      <% } %>
+                  </div>
+
+
+                  <% if (authuser.email_verification_code) { %>
+                    <hr class="mb-5">
+                    <h2 class="h5 mb-2">Confirmation Code</h2>
+
+                    <form action="/resend-email-verification" method="POST">
+                      <p class="mb-2 fs-xs opacity-90">Havent Recieve any Confirmation Code ? <button 
+                        style="
+                          color: #800080;
+                          text-decoration: underline;
+                          background: none;
+                          border: none;" type="submit">Resend</button> <span class="ms-1">Dont Forget to check in your spam !</span></p>
+                    </form>
+
+                      <form action="/confirm-email" method="POST">
+                        <input type="text" name="confirmation_code" placeholder="Enter Your Verification Code Here" class="form-control form-control-lg mb-2" maxlength="6" minlength="6">
+                        <div class="w-100 d-flex justify-content-end">
+                          <button type="submit" class="btn btn-primary mt-3 mb-5">Submit Code</button>
+                        </div>
+                      </form>
+                  <% } %>
+                  </div> 
+
+
+
+
+
+                <div class="card px-5 pt-5 mt-4">
+                  <% if (authuser.pgp_keys) { %>
+                    <h2 class="h5 mb-3">Change Pgp Keys</h2>
+                  <% } else { %> 
+                    <h2 class="h5 mb-3">Add Pgp Keys</h2>
+                  <% } %>
+                  <form action="/add-pgp" method="POST">
+                    
+                    <div class="position-relative">
+                      <% if (authuser.verifiedPgpKeys) { %>
+                        <textarea rows="1" name="pgp" placeholder="Pgp Keys" class="form-control form-control-lg mb-4 overflow-container" required><%-authuser.verifiedPgpKeys%></textarea>
+                        <span class="badge bg-success shadow-success top-right">Verified</span>
+                      <% } else if (authuser.pgp_keys) { %>
+                        <textarea rows="1" name="pgp" placeholder="Pgp Keys" class="form-control form-control-lg mb-4 overflow-container" required><%-authuser.pgp_keys%></textarea>
+                        <span class="badge bg-orange shadow-orange top-right">Not Verified</span>
+                      <% } else { %>
+                        <textarea rows="1" name="pgp" placeholder="Pgp Keys" class="form-control form-control-lg mb-4" required></textarea>
+                        <span class="badge bg-danger shadow-danger top-right">No Pgp Keys</span>
+                      <% } %>
+                    </div>
+
+
+
+                    <div class="d-flex align-items-center mt-3 mb-5 justify-content-end flex-wrap">
+                      <% if (authuser.pgp_keys || authuser.verifiedPgpKeys) { %>
+                        <div class="d-flex form-check align-items-center w-100 mb-4">
+                          <input class="form-check-input" type="checkbox" id="confirm-pgp" required>
+                          <label class="form-check-label" for="confirm-pgp">I Understand that it might cause some problems</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary ms-auto">Change</button>
+                      <% } else { %>
+                        <button type="submit" class="btn btn-primary">Add Pgp Keys</button>
+                      <% } %>
+                    </form>
+                      <% if (authuser.pgp_keys || authuser.verifiedPgpKeys) { %> 
+                        <form action="/delete-pgp" method="POST" class="padding-left-10">
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                      <% } %>
+                    </div>  
+
+                    <% if (authuser.pgp_keys_verification_words_encrypted) { %>
+                      <hr class="mb-5">
+
+                      <h2 class="h5 mb-2">Verify your Pgp Key</h2> 
+                      <p class="mb-2 fs-xs opacity-90">Decrypt this text with the key that you've submit us</p>
+                      
+                      <textarea placeholder="Encrypted Sentece Container" class="form-control form-control-lg mb-4 overflow-container" required><%=authuser.pgp_keys_verification_words_encrypted%></textarea>
+
+                      <h2 class="h5 mb-2">Decrypted Text</h2>
+                      <p class="mb-2 fs-xs opacity-90">Paste and submit the decrypted text here to verify your pgp key</p>
+                      <form action="/verify-pgp" method="POST" class="d-flex flex-column align-items-end">
+                        <input type="text" name="pgpVerification" placeholder="Decrypted Sentence" class="form-control form-control-lg mb-2" required>
+                        <button type="submit" class="btn btn-primary mt-3 mb-5">Verify Pgp</button>
+                      </form>
+                    <% } %>
+                  </div>
+
+
+
+
+
+
+                <div class="card px-5 pt-5 mt-4">
+                  <h2 class="h5 mb-4">Password</h2>
+                  <form class="needs-validation border-bottom pb-3 pb-lg-4" action="/change-password?_method=PUT" method="POST">
+                    <div class="row">
+                      <div class="col-sm-6 mb-4">
+                        <label for="cp" class="form-label fs-base">Current password</label>
+                        <div class="password-toggle">
+                          <input type="password" id="cp" name="password" class="form-control form-control-lg" minlength="8" maxlength="200" placeholder="Current Password" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6 mb-4">
+                        <label for="np" class="form-label fs-base">New password</label>
+                        <div class="password-toggle">
+                          <input type="password" id="np" name="newPassword" class="form-control form-control-lg" minlength="8" maxlength="200" placeholder="Enter your new Password" required>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 mb-4">
+                        <label for="cnp" class="form-label fs-base">Confirm new password</label>
+                        <div class="password-toggle">
+                          <input type="password" id="cnp" name="confirmPassword" class="form-control form-control-lg" minlength="8" maxlength="200" placeholder="Repeat New Password" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex mb-3 justify-content-end mt-3">
+                      <button type="submit" class="btn btn-primary">Change Password</button>
+                    </div>
+                  </form>
+                </div>
+
+
+                  <div class="card px-5 pt-5 pb-4 mt-4">
+                  <h2 class="h5">Enable 2 Step Verification</h2>
+                    <form action="/enable-2fa" method="POST">
+                      <% if (authuser.email && !authuser.email_verification_code) { %>
+                        <input class='form-check-input' type="radio" name="stepVerification" id="email-2fa" value="email" required
+                        <% if (authuser.settings.step_verification === 'email') { %>
+                          checked
+                        <% } %>>
+                        <label class='form-check-label ms-2' for="email-2fa">Activate 2 step Verification by Email</label><br>
+                      <% } else { %>
+                        <label class='form-check-label opacity-60' for="2">Activate 2 step Verification by Email (Add and Verify an Email to Unable this Option)</label><br>
+                      <% } %>
+
+                      <% if (authuser.verifiedPgpKeys) { %>
+                        <input class='form-check-input' type="radio" name="stepVerification" id="pgp-2fa" value="pgp" required
+                        <% if (authuser.settings.step_verification === 'pgp') { %>
+                          checked
+                        <% } %>>
+                        <label class='form-check-label ms-2' for="pgp-2fa">Activate 2 step Verification by Pgp Keys</label><br>
+                      <% } else { %>
+                        <label class='form-check-label opacity-60' for="2">Activate 2 step Verification by Pgp Keys (Add and Verify a Pgp Keys to Unable this Option)</label><br>
+                      <% } %>
+
+                      <div class="d-flex align-items-center justify-content-end flex-wrap  mt-2">
+                      <% if ((authuser.email && !authuser.email_verification_code) || authuser.verifiedPgpKeys) { %>
+                        <% if (authuser.settings.step_verification) { %>
+                          <button class="btn btn-primary" type="submit">Change</button>
+                        <% } else { %> 
+                          <button class="btn btn-primary" type="submit">Add 2 step Verification</button>
+                        <% } %>
+                      <% } else { %>
+                        <p class="mt-4">You need to add an email or a Pgp Keys before bieng able to use 2 Step Verification</p>
+                      <% } %>
+
+                    </form>
+                    <% if (authuser.settings.step_verification) { %>
+                      <form action="/remove-2fa" method="POST" class="padding-left-10">
+                      <button class="btn btn-danger" type="submit">Remove</button>
+                    </form>
+                    <% } %>
+                  </div>
+
+                </div>
+
+                
+              <!-- Delete account -->
+              <div class="card card-body p-5 mt-4 danger-settings">
+              <h2 class="h5">Delete account</h2>
+              <p>This action is irreversible and will result in the lost of <b>ALL</b> data of your profile except the reviews that you have posted</p>
+              <form action="/delete-user?_method=DELETE" method="POST">
+              <div class="form-check d-flex align-items-center sm-flex-direction-column">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" id="delete-account" class="form-check-input mb-1" required>
+                  <label for="delete-account" class="form-check-label fs-base ms-2">Yes, I want to delete my account</label>
+                </div>
+                <button type="submit" class="btn btn-danger ms-auto">Delete Account</button>
+              </div>
+            </form>
+                </div>
+              </div>
+
+                </div>
+                
+              </div>
+
+          </section>
+
+        </main>
+    
+    
+        <!-- Footer -->
+        <%- include('../../Partials/Statics/Footer') %>
+      </body>
+    </html>
+    

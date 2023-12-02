@@ -1,0 +1,60 @@
+<%- include('../../Partials/Statics/Head', {page: '- Notifications'}) %>
+<body>
+
+    
+        <main class="page-wrapper">
+
+            <%- include('../../Partials/Statics/Navbar') %>
+
+          <!-- Breadcrumb -->
+
+
+          <!-- Page content -->
+          <section class="container pt-5" style="max-width: 1520px;">
+
+
+            <nav class="pt-2 pb-5" aria-label="breadcrumb">
+              <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                  <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Settings</li>
+              </ol>
+            </nav>
+
+
+
+            <div class="row setting-view">
+              
+              <%-include('../../Partials/sidebarSettings') %>
+  
+
+              
+              <div class="col-md-8 pb-5 mb-lg-2 mb-lg-4"> 
+
+                  <div class="mb-3">
+                    <%- include('../../Partials/components/flashMessages') %>
+                  </div>   
+
+                  <h1 class="h2 pt-xl-1">Notifications</h1>
+
+                  <% if (!userNotifications.length) { %>
+                    <h6 class="mt-5" style="text-align: center">You dont have any Notifications</h6>
+                  <% } else { %> 
+                    <%- include('../../Partials/render/notifications', {NOTIFICATIONS: userNotifications}) %>
+                  <% } %>
+
+                </div>
+                
+              </div>
+
+          </section>
+
+        </main>
+    
+    
+        <!-- Footer -->
+        <%- include('../../Partials/Statics/Footer') %>
+      </body>
+    </html>
+    

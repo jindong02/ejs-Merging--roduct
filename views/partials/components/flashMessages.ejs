@@ -1,0 +1,16 @@
+<% if (error.length) { %>
+        <div class="alert alert-danger text-center" role="alert">
+            <%- error %>
+        </div>
+  <% } %>
+  <% if (warning.length) { %>
+            <div class="alert alert-warning text-center" role="alert">
+                <%- warning %>
+            </div> 
+  <% } %>
+  <% if (success.length) { %>
+            <div class="alert alert-success text-center" role="alert">
+                <%- success %>
+            </div>
+  <% } %>
+

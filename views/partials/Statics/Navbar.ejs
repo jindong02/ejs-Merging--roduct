@@ -1,0 +1,263 @@
+<header>
+    <div class="container">
+        <input id="mobile-menu-button-checkbox" class="hidden-checkbox" type="checkbox" />
+        <input id="mobile-menu-dropdown-checkbox-1" class="hidden-checkbox" type="checkbox" />
+        <input id="mobile-menu-dropdown-checkbox-2" class="hidden-checkbox" type="checkbox" />
+        <input id="search-checkbox" class="hidden-checkbox" type="checkbox" />
+        <nav class="main-navbar">
+            <a href="/" class="navbar-brand text-light">
+                <img src="/assets/img/logo.svg" width="38" alt="Project" />
+                Project
+            </a>
+            <div class="mobile-menu-bar">
+                <label for="search-checkbox" class="search-button">
+                    <i class="bx bx-search-alt fs-lg"></i>
+                </label>
+                <div class="divider">
+                    <span></span>
+                </div>
+                <div id="mobile-menu-button" class="mobile-menu-button">
+                    <label id="mobile-menu-icon" for="mobile-menu-button-checkbox">
+                        <div class="hide-des">
+                            <span class="menu-line"></span>
+                            <span class="menu-line"></span>
+                            <span class="menu-line"></span>
+                            <span class="menu-line"></span>
+                            <span class="menu-line"></span>
+                            <span class="menu-line"></span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="nav-content">
+                <div class="mobile-menu-scroll-space"></div>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <a href="/products?productPage=1" class="navbar-link">Products</a>
+                    </li>
+                    <% if (authuser) { %>
+                        <li class="nav-item">
+                            <a href="/user/profile/<%=authuser.username%>?productPage=1&reviewPage=1"
+                                class="navbar-link">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/user/messages#bottom" class="navbar-link">Messages</a>
+                        </li>
+                        <% } %>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="navbar-link dropdown-active" aria-expanded="false">
+                                    <label for="mobile-menu-dropdown-checkbox-1">
+                                        <div>Docs
+                                            <span class="dropdown-caret">
+                                                <%- include ("../../../public/assets/img/icons/caret-down.svg") %>
+                                            </span>
+                                        </div>
+                                    </label></a>
+                                <div class="navbar-dropdown docs-dropdown">
+                                    <ul>
+                                        <li>
+                                            <a href="/news"><span><i
+                                                        class="bx bx-news fs-base opacity-60 me-2"></i>News</span></a>
+                                        </li>
+                                        <li class="dropdown-divider"></li>
+                                        <li>
+                                            <a href="/docs"><span><i
+                                                        class="bx bx-file fs-base opacity-60 me-2"></i>Documentation</span></a>
+                                        </li>
+                                        <li class="dropdown-divider"></li>
+                                        <li>
+                                            <a href="/contactus"><span><i
+                                                        class="bx bx-phone fs-base opacity-60 me-2"></i>Contact
+                                                    Us</span></a>
+                                        </li>
+
+                                        <!-- <li class="dropdown">
+                      <a href="#" class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action link</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="#">Yet another link</a></li>
+                      </ul>
+                    </li> -->
+                                    </ul>
+                                </div>
+                            </li>
+                </ul>
+                <div class="navbar-right-cluster">
+
+                    <% if (!authuser) { %>
+                        <label for="search-checkbox" class="search-button me-5">
+                            <i class="bx bx-search-alt fs-xl nav-link"></i>
+                        </label>
+                        <% } %>
+
+
+                            <% if (authuser) { %>
+                                <label for="search-checkbox" class="search-button">
+                                    <i class="bx bx-search-alt fs-xl nav-link"></i>
+                                </label>
+
+
+                                <a href="/user/settings/notifications" class="search-button me-3"
+                                    style="text-decoration: none;">
+                                    <div class="position-relative">
+                                        <i class='bx bxs-bell fs-xl nav-link'></i>
+                                        <% if (authuser.notifications[0]?.seen===false) { %>
+                                            <div class="position-absolute top-0 end-0"
+                                                style="margin-right: 15px; margin-top: 8px;">
+                                                <div class="bg-primary p-1" style="border-radius: 25rem;"></div>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                </a>
+
+                                <div class="user-profile-container">
+                                    <a href="/user/profile/<%=authuser.username%>?productPage=1&reviewPage=1"
+                                        class="not-mobile-only user-profile-item navbar-link">
+                                        <span>
+                                            <img src="<%=authuser.img_path%>" class="small-rc rounded-circle" width="48"
+                                                style="min-width: 40px" alt="User img" />
+
+                                            <div class="drop-down-user">
+                                                <div class="ps-2">
+                                                    <div class="fs-xs lh-1 opacity-60">Hey,</div>
+                                                    <div class="fs-sm">
+                                                        <%=authuser.username%>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <span class="dropdown-caret">
+                                                        <%- include ("../../../public/assets/img/icons/caret-down.svg")
+                                                            %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </a>
+                                    <div class="mobile-only">
+                                        <span class="user-profile-item d-flex navbar-link">
+                                            <img src="<%=authuser.img_path%>" class="small-rc rounded-circle" width="48"
+                                                alt="User img" />
+                                        </span>
+                                        <label for="mobile-menu-dropdown-checkbox-2" class="drop-down-user">
+                                            <div class="ps-2">
+                                                <div class="fs-xs lh-1 opacity-60">Hey,</div>
+                                                <div class="fs-sm">
+                                                    <%=authuser.username%>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="dropdown-caret">
+                                                    <%- include ("../../../public/assets/img/icons/caret-down.svg") %>
+                                                </span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="navbar-dropdown nav-user-dropdown <%=authuser.authorization %>">
+                                        <ul>
+                                            <li>
+                                                <a
+                                                    href="/user/profile/<%=authuser.username%>?productPage=1&reviewPage=1">
+                                                    <span><i class="bx bx-user fs-base opacity-60 me-2"></i>
+                                                        Profile</span>
+                                                </a>
+                                            </li>
+                                            <% if (authuser.authorization==='vendor' ) { %>
+                                                <li class="dropdown-divider"></li>
+                                                <li>
+                                                    <a href="/orders?clientsOrders=true&ordersPage=1">
+                                                        <span><i
+                                                                class="bx bx-shopping-bag fs-base opacity-60 me-2"></i>Your
+                                                            Clients Order</span>
+                                                    </a>
+                                                </li>
+                                                <% } %>
+                                                    <li class="dropdown-divider"></li>
+                                                    <li>
+                                                        <a href="/orders?ordersPage=1">
+                                                            <span><i
+                                                                    class="bx bx-shopping-bag fs-base opacity-60 me-2"></i>Your
+                                                                Orders</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="dropdown-divider"></li>
+                                                    <li>
+                                                        <a href="/user/messages#bottom">
+                                                            <span>
+                                                                <i class="bx bx-chat fs-base opacity-60 me-2"></i>
+                                                                Messages
+                                                                <!-- <span class="bg-success rounded-circle mt-n2 ms-1" style="width: 5px; height: 5px;"></span> -->
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="dropdown-divider"></li>
+                                                    <li>
+                                                        <a href="/user/settings/savedProducts?productPage=1">
+                                                            <span>
+                                                                <i class="bx bx-heart fs-base opacity-60 me-2"></i>
+                                                                Saved Product
+                                                                <span class="ms-5 fs-xs text-muted">
+                                                                    <%=authuser.saved_product.length%>
+                                                                </span></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="dropdown-divider"></li>
+                                                    <li>
+                                                        <a href="/user/settings/security">
+                                                            <!-- Change Icon -->
+                                                            <span><i class="bx bx-cog fs-base opacity-60 me-2"></i>
+                                                                Settings</span>
+                                                        </a>
+                                                    </li>
+                                                    <!-- <li>
+                            <a href="#" class="dropdown-item d-flex align-items-center">
+                              <i class="bx bx-dollar fs-base opacity-60 me-2"></i>
+                              Sales
+                              <span class="ms-auto fs-xs text-muted">$735.00</span>
+                            </a>
+                          </li> -->
+                                                    <li class="dropdown-divider"></li>
+                                                    <li>
+                                                        <a href="/logout">
+                                                            <span> <i class="bx bx-log-out fs-base opacity-60 me-2"></i>
+                                                                Sign out</span>
+                                                        </a>
+                                                    </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <% } %>
+                                    <% if (!authuser) { %>
+                                        <div class="login-signup">
+                                            <a href="/login" class="nav-link me-2">Log In</a>
+                                            <a href="/register"
+                                                class="sign-up-button btn btn-primary btn-sm fs-sm rounded-pill my-3 my-lg-0">
+                                                <i class="bx bx-user fs-lg me-2"></i>
+                                                Sign up
+                                            </a>
+                                        </div>
+
+                                        <% } %>
+                </div>
+            </div>
+            <div id="search-box" class="search-box">
+                <div>
+                    <div class="search-box-search-icon">
+                        <i class="bx bx-search-alt fs-xl mx-3"></i>
+                    </div>
+                    <form action="/search-products" method="POST">
+                        <input type="text" class="nav-search-input" id="nav-search-input"
+                            placeholder="Search for a product" name="search" />
+                    </form>
+
+                    <label for="search-checkbox" close-cross class="close-cross">
+                        <%- include ("../../../public/assets/img/icons/close-cross.svg") %>
+                    </label>
+                </div>
+                <label class="search-box-clickout" for="search-checkbox"></label>
+            </div>
+        </nav>
+    </div>
+</header>

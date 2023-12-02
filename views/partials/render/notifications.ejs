@@ -1,0 +1,37 @@
+<% for(let i=0; i < NOTIFICATIONS.length; i++) { %>
+
+    <article class="card card-hover border-0 card-deep-shadow mt-4">
+        <div class="row g-0">
+            <div class="card-body">
+
+                <p class="fw-bold mt-2 mb-2">
+                    <%-NOTIFICATIONS[i].type%>
+                </p>
+
+                <p class="fs-sm m-0">
+                    <%-NOTIFICATIONS[i].data%>
+                </p>
+
+                <% if (NOTIFICATIONS[i].seen===false) { %>
+                    <div class="position-absolute top-0 start-0" style="margin-top: -10px; margin-left: -5px;">
+                        <span class="badge bg-primary shadow-primary">New</span>
+                    </div>
+                    <% } %>
+
+                        <% if (NOTIFICATIONS[i].id) { %>
+                            <div class="position-absolute top-0 end-0" title="Delete This Notification"
+                                style="margin: -5px -5px 0 0;">
+                                <form action="/delete-notification/<%=NOTIFICATIONS[i].id%>" method="POST">
+                                    <button type="submit" class="btn btn-outline-danger p-2"
+                                        style="border-radius: 50%;">
+                                        <i class="bx bx-trash-alt fs-xl"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <% } %>
+
+            </div>
+        </div>
+    </article>
+
+    <% } %>

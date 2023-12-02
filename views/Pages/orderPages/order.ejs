@@ -1,0 +1,209 @@
+<%- include('../../Partials/Statics/Head', {page: '- Order ' + product.title}) %>
+
+
+<!-- Body -->
+
+<body>
+
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+      <%- include('../../Partials/Statics/Navbar') %>
+
+      <section class="container mt-3 mb-2 mb-md-4 mb-lg-5 pt-lg-2 pb-5">
+
+
+        <nav class="py-4" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="/"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/products?productPage=1">Product</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="">Order</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              <%=product.title.slice(0, 50)%>
+              <% if (product.title.length > 50) { %>
+              ...
+              <% } %>
+            </li>
+          </ol>
+        </nav>
+
+
+        <div class="pt-3 pb-2 py-sm-4 pt-lg-4 align-items-center">
+          <%- include('../../Partials/components/flashMessages') %>
+        </div>
+
+
+
+
+        <!-- Page title + Layout switcher -->
+        <form action="/create-order/<%=product.slug%>" method="POST">
+        <div class="d-flex align-items-center justify-content-between mb-4 pb-1 pb-md-3">
+          <h2 class="mb-0">Customize Your Order</h2>
+        </div>
+
+
+        <!-- Blog list + Sidebar -->
+        <div class="row">
+          <div class="col-xl-8 col-lg-8 col-md-7 order-md-1 mb-4">
+
+            <%- include('../../Partials/render/productCard', {PRODUCT: product}) %>
+
+            <hr class="my-3">
+
+
+            <% if (product.shipping_option.length) { %>
+            <div class="card card-deep-shadow px-3 px-md-4 py-4 my-3">
+              <h3 class="h5 mb-2">Shipping Option</h3>
+              <select name='shippingOption' class="form-select" id="select-input">
+                <% for(let i = 0; i < product.shipping_option.length; i++) { %>
+                <option value="<%=product.shipping_option[i].option_description%>">
+                  <%=product.shipping_option[i].option_description%> 
+                  <% if (!product.shipping_option[i].option_price) { %>
+                    0$
+                  <% } else { %>
+                    <%=product.shipping_option[i].option_price%>$
+                  <% } %>
+                </option>
+                <% } %>
+              </select>
+            </div>
+            <% } %>
+
+
+            <% if (product.selection_1) { %>
+            <div class="card card-deep-shadow px-3 px-md-4 py-4 my-3">
+              <h3 class="h5 mb-2">Select the <%=product.selection_1.selection_name%></h3>
+              <select name='selection1' class="form-select" id="select-input">
+                <% for(let i = 0; i < product.selection_1.selection_choices.length; i++) { %>
+                <option value="<%=product.selection_1.selection_choices[i].choice_name%>">
+                  <%=product.selection_1.selection_choices[i].choice_name%>
+                  <% if (!product.selection_1.selection_choices[i].choice_price) { %>
+                    0$
+                  <% } else { %>
+                    <%=product.selection_1.selection_choices[i].choice_price%>$
+                  <% } %>
+                  </option>
+                <% } %>
+              </select>
+            </div>
+            <% } %>
+
+
+            <% if (product.selection_2) { %>
+            <div class="card card-deep-shadow px-3 px-md-4 py-4">
+              <h3 class="h5 mb-2">Select the <%=product.selection_2.selection_name%></h3>
+              <select name='selection2' class="form-select" id="select-input">
+                <% for(let i = 0; i < product.selection_2.selection_choices.length; i++) { %>
+                <option value="<%=product.selection_2.selection_choices[i].choice_name%>">
+                  <%=product.selection_2.selection_choices[i].choice_name%> 
+                  <% if (!product.selection_2.selection_choices[i].choice_price) { %>
+                    0$
+                  <% } else { %>
+                    <%=product.selection_2.selection_choices[i].choice_price%>$
+                  <% } %>
+                </option>
+                <% } %>
+              </select>
+            </div>
+            <% } %>
+
+          </div>
+
+
+
+
+          <aside class="col-lg-4 col-md-5 order-md-2 mb-3">
+            <div style="margin-top: -96px;"></div>
+            <div class="position-sticky top-0 pt-5">
+              <div class="pt-5">
+              <div class="card card-deep-shadow border-0 pb-3">
+                <div class="card-body px-3 px-md-4 py-4">
+                  
+                  <p class="mb-2">Privacy Settings</p>
+                  <input class='form-check-input' type="radio" name="privacyType" id="default" value="default" required>
+                  <label class='form-check-label ms-1 mb-1' for="default">Default <span class="opacity-70">(Not
+                      Recommended)</span></label><br>
+
+                  <input class='form-check-input' type="radio" name="privacyType" id="semi-hidden" value="semi-hidden" required
+                    checked>
+                  <label class='form-check-label ms-1 mb-1' for="semi-hidden">Semi-Hidden</label><br>
+
+                  <% if (product.allow_hidden) { %>
+                  <input class='form-check-input' type="radio" name="privacyType" id="Hidden" value="hidden" required>
+                  <label class='form-check-label ms-1 mb-1' for="Hidden">Hidden</label><br>
+                  <% } %>
+
+                  <hr class="my-2">
+
+
+                  <div class="mb-3">
+                    <label for="number-input" class="form-label">Quantity</label>
+
+
+                    <div class="d-flex">
+                      <% if (product.qty_settings?.max_order) { %>
+                      <input class="form-control" type="number" id="number-input" max="product.qty_settings?.max_order"
+                        placeholder="Max: <%=product.qty_settings?.max_order%>" name="quantity">
+                      <% } else if (product.qty_settings?.available_qty) { %>
+                      <input class="form-control" type="number" id="number-input"
+                        max="product.qty_settings?.available_qty"
+                        placeholder="Max: <%=product.qty_settings?.available_qty%>" name="quantity">
+                      <% } else { %>
+                      <input class="form-control" type="number" id="number-input" placeholder="Max: 1000" max="1000" name="quantity">
+                      <% } %>
+                    </div>
+                  </div>
+
+                  <div class="d-flex align-items-center">
+                    <p class="fs-sm mb-0">Market Fee: </p>
+                    <p class="ms-2 mb-0"><b>3%</b></p>
+                  </div>
+
+                  <hr class="my-2">
+
+                  <div class="d-flex align-items-center">
+                    <p class="fs-sm mb-0">Base Price:</p>
+                    <p class="ms-2 mb-0"><b><%=product.salesPrice ? product.salesPrice : product.price%>$</b></p>
+                  </div>
+
+                  <hr class="my-2">
+
+                  <div class="d-flex align-items-center">
+                    <p class="fs-sm mb-0">Final Price:</p>
+                    <p class="ms-2 mb-0"> <b>
+                      <% if (product.shipping_option.length || product.selection_1 || product.selection_2) { %>
+                        (<%=product.salesPrice ? product.salesPrice : product.price%> + Added Price)
+                        <% } else { %>
+                          <%=product.salesPrice ? product.salesPrice : product.price%>
+                        <% } %>
+                        × QTY + 3%
+                    </b></p>
+                  </div>
+
+                  <a href="/docs" class="fs-sm">Learn More</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary rounded-pill shadow-primary mx-3">Make Order</button>
+              </div>
+            </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+  </form>
+
+  <!-- Footer -->
+  <%- include('../../Partials/Statics/Footer') %>
+  </main>
+
+
+</body>
+
+</html>

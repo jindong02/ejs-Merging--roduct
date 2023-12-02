@@ -1,0 +1,16 @@
+<div class="popup-dialog reject-popup">
+    <div class="rounded p-3">
+        <form action="<%=action%>" method="POST">
+          <p class="mb-0">Are you sure that you wish to Reject this Order ?</p>
+          <div class="mx-auto mt-3" style="width: 90%">
+            <label class="form-label fw-bold" for="reason">Give a reason to the buyer</label>
+            <input class="form-control" type="text" id="reason" name="reason" minlength="10" maxlength="1000" placeholder="Give a reason to the buyer" required>
+          </div>
+       <div class="buttons mt-4">
+          <button type="submit" class="confirm-button btn btn-primary" name="status" value="cancel">Reject Order</button>
+          <label for="<%=checkboxInputId%>" class="btn btn-danger cancel-button">Cancel</label>
+       </div>
+   </div>
+</form>
+    <label for="<%=checkboxInputId%>" class="popup-close"></label>
+ </div>

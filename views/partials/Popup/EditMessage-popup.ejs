@@ -1,0 +1,14 @@
+<!--designed to work with css input popup technique - no js -->
+<div class="popup-dialog">
+   <div class="rounded py-4 px-4">
+      <div class="text pb-4"><b>Edit This Message</b></div>
+      <form action="/messages/<%=CONVERSATION_ID%>?action=edit&msgIndex=<%=MESSAGE_POSITION%>" method="POST">
+        <textarea rows="2" name="content" placeholder="Edit this Message" class="form-control form-control-lg mb-4" minlength="2" maxlength="1000" required><%=MESSAGE.content%></textarea>
+      <div class="d-flex">
+        <button type="submit" class="confirm-button btn btn-primary">Edit</button>
+      </form>
+         <label for="edit-message-input-<%=MESSAGE_POSITION%>" class="btn btn-danger cancel-button ms-auto">Cancel</label>
+      </div>
+   </div>
+   <label for="edit-message-input-<%=MESSAGE_POSITION%>" class="popup-close"></label>
+</div>
